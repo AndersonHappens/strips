@@ -207,7 +207,171 @@ public class GameState implements Comparable<GameState> {
         }
     }
 
-    /**
+    public int getGoalWoodAmount() {
+		return goalWoodAmount;
+	}
+
+	public void setGoalWoodAmount(int goalWoodAmount) {
+		this.goalWoodAmount = goalWoodAmount;
+	}
+
+	public int getGoalGoldAmount() {
+		return goalGoldAmount;
+	}
+
+	public void setGoalGoldAmount(int goalGoldAmount) {
+		this.goalGoldAmount = goalGoldAmount;
+	}
+
+	public int getPlayerNum() {
+		return playerNum;
+	}
+
+	public void setPlayerNum(int playerNum) {
+		this.playerNum = playerNum;
+	}
+
+	public boolean isBuildPeasantsAvailable() {
+		return buildPeasantsAvailable;
+	}
+
+	public void setBuildPeasantsAvailable(boolean buildPeasantsAvailable) {
+		this.buildPeasantsAvailable = buildPeasantsAvailable;
+	}
+
+	public int getxSize() {
+		return xSize;
+	}
+
+	public void setxSize(int xSize) {
+		this.xSize = xSize;
+	}
+
+	public int getySize() {
+		return ySize;
+	}
+
+	public void setySize(int ySize) {
+		this.ySize = ySize;
+	}
+
+	public int[] getWoodIds() {
+		return woodIds;
+	}
+
+	public void setWoodIds(int[] woodIds) {
+		this.woodIds = woodIds;
+	}
+
+	public Position[] getWoodPositions() {
+		return woodPositions;
+	}
+
+	public void setWoodPositions(Position[] woodPositions) {
+		this.woodPositions = woodPositions;
+	}
+
+	public int[] getWoodAmounts() {
+		return woodAmounts;
+	}
+
+	public void setWoodAmounts(int[] woodAmounts) {
+		this.woodAmounts = woodAmounts;
+	}
+
+	public int[] getGoldIds() {
+		return goldIds;
+	}
+
+	public void setGoldIds(int[] goldIds) {
+		this.goldIds = goldIds;
+	}
+
+	public Position[] getGoldPositions() {
+		return goldPositions;
+	}
+
+	public void setGoldPositions(Position[] goldPositions) {
+		this.goldPositions = goldPositions;
+	}
+
+	public int[] getGoldAmounts() {
+		return goldAmounts;
+	}
+
+	public void setGoldAmounts(int[] goldAmounts) {
+		this.goldAmounts = goldAmounts;
+	}
+
+	public int getTownHallId() {
+		return townHallId;
+	}
+
+	public void setTownHallId(int townHallId) {
+		this.townHallId = townHallId;
+	}
+
+	public Position getTownHallPosition() {
+		return townHallPosition;
+	}
+
+	public void setTownHallPosition(Position townHallPosition) {
+		this.townHallPosition = townHallPosition;
+	}
+
+	public int getWoodAmount() {
+		return woodAmount;
+	}
+
+	public void setWoodAmount(int woodAmount) {
+		this.woodAmount = woodAmount;
+	}
+
+	public int getGoldAmount() {
+		return goldAmount;
+	}
+
+	public void setGoldAmount(int goldAmount) {
+		this.goldAmount = goldAmount;
+	}
+
+	public ArrayList<Integer> getPeasantIds() {
+		return peasantIds;
+	}
+
+	public void setPeasantIds(ArrayList<Integer> peasantIds) {
+		this.peasantIds = peasantIds;
+	}
+
+	public ArrayList<Position> getPeasantPositions() {
+		return peasantPositions;
+	}
+
+	public void setPeasantPositions(ArrayList<Position> peasantPositions) {
+		this.peasantPositions = peasantPositions;
+	}
+
+	public GameState getParent() {
+		return parent;
+	}
+
+	public void setParent(GameState parent) {
+		this.parent = parent;
+	}
+
+	public StripsAction getAction() {
+		return action;
+	}
+
+	public void setAction(StripsAction action) {
+		this.action = action;
+	}
+
+	public void setCost(int cost) {
+		this.cost = cost;
+	}
+
+	/**
      * This will be necessary to use the GameState as a key in a Set or Map.
      *
      * @param o The game state to compare

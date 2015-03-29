@@ -2,10 +2,6 @@ package edu.cwru.sepia.agent.planner;
 
 import edu.cwru.sepia.action.Action;
 import edu.cwru.sepia.agent.Agent;
-import edu.cwru.sepia.agent.AstarAgent.LocationComparator;
-import edu.cwru.sepia.agent.AstarAgent.GameState;
-import edu.cwru.sepia.agent.AstarAgent.GameState;
-import edu.cwru.sepia.agent.AstarAgent.GameState;
 import edu.cwru.sepia.agent.planner.actions.StripsAction;
 import edu.cwru.sepia.environment.model.history.History;
 import edu.cwru.sepia.environment.model.state.State;
@@ -97,7 +93,7 @@ public class PlannerAgent extends Agent {
     private Stack<StripsAction> AstarSearch(GameState startState) {
     	boolean goalFound = false;
     	//define a priority queue of the size of all open spaces on the map 
-    	PriorityQueue<GameState> openset = new PriorityQueue<GameState>(startState.xSize*startState.ySize - startState.woodPositions.length - startState.goldPositions.length - 1);
+    	PriorityQueue<GameState> openset = new PriorityQueue<GameState>(startState.getxSize()*startState.getySize() - startState.getWoodPositions().length - startState.getGoldPositions().length - 1);
     	Hashtable<GameState, GameState> closedList = new Hashtable<GameState, GameState>();
     	// add initial start location
     	openset.add(startState);
@@ -156,9 +152,9 @@ public class PlannerAgent extends Agent {
     	Stack<StripsAction> endList = new Stack<StripsAction>();
     	GameState currentNode = end;
     	//while the parent exists, add the node to the endList
-    	while(currentNode.parent!=null && currentNode.action != null) {
-    		endList.push(currentNode.action);
-    		currentNode = currentNode.parent;
+    	while(currentNode.getParent()!=null && currentNode.getAction() != null) {
+    		endList.push(currentNode.getAction());
+    		currentNode = currentNode.getParent();
     	}
     	//remove the start node from the stack 
     	endList.pop();
