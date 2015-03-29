@@ -1,8 +1,15 @@
 package edu.cwru.sepia.agent.planner;
 
+import edu.cwru.sepia.agent.planner.actions.StripsAction;
+import edu.cwru.sepia.environment.model.state.ResourceNode;
+import edu.cwru.sepia.environment.model.state.ResourceNode.ResourceView;
+import edu.cwru.sepia.environment.model.state.ResourceType;
 import edu.cwru.sepia.environment.model.state.State;
+import edu.cwru.sepia.environment.model.state.Unit;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * This class is used to represent the state of the game after applying one of the avaiable actions. It will also
@@ -22,7 +29,34 @@ import java.util.List;
  * class/structure you use to represent actions.
  */
 public class GameState implements Comparable<GameState> {
-
+     
+     private int goalWoodAmount;
+     private int goalGoldAmount;
+     private int playerNum;
+     private boolean buildPeasantsAvailable;
+     
+     private int xSize;
+     private int ySize;
+     
+     private int[] woodIds;
+     private Position[] woodPositions;
+     private int[] woodAmounts;
+     
+     private int[] goldIds;
+     private Position[] goldPositions;
+     private int[] goldAmounts;
+     
+     private int townHallId;
+     private Position townHallPosition;
+     private int woodAmount;
+     private int goldAmount;
+     
+     private ArrayList<Integer> peasantIds;
+     private ArrayList<Position> peasantPositions;
+     
+     private GameState parent;
+     private StripsAction action;
+     
     /**
      * Construct a GameState from a stateview object. This is used to construct the initial search node. All other
      * nodes should be constructed from the another constructor you create or by factory functions that you create.
@@ -34,7 +68,51 @@ public class GameState implements Comparable<GameState> {
      * @param buildPeasants True if the BuildPeasant action should be considered
      */
     public GameState(State.StateView state, int playernum, int requiredGold, int requiredWood, boolean buildPeasants) {
-        // TODO: Implement me!
+        goalGoldAmount=requiredGold;
+        goalWoodAmount=requiredWood;
+        playerNum=playernum;
+        buildPeasantsAvailable=buildPeasants;
+        
+        xSize=state.getXExtent();
+        ySize=state.getYExtent();
+        
+        ResourceView[] woodNodes=state.getResourceNodes(ResourceNode.Type.TREE).toArray(new ResourceView[0]);
+        woodIds=new int[woodNodes.length];
+        woodPositions=new Position[woodNodes.length];
+        woodAmounts=new int[woodNodes.length];
+        for(int i=0;i<woodNodes.length;i++) {
+             woodIds[i]=woodNodes[i].getID();
+             woodPositions[i]=new Position(woodNodes[i].getXPosition(), woodNodes[i].getYPosition());
+             woodAmounts[i]=woodNodes[i].getAmountRemaining();
+        }
+        
+        ResourceView[] goldNodes=state.getResourceNodes(ResourceNode.Type.GOLD_MINE).toArray(new ResourceView[0]);
+        goldIds=new int[goldNodes.length];
+        goldPositions=new Position[goldNodes.length];
+        goldAmounts=new int[goldNodes.length];
+        for(int i=0;i<goldNodes.length;i++) {
+             goldIds[i]=goldNodes[i].getID();
+             goldPositions[i]=new Position(goldNodes[i].getXPosition(), goldNodes[i].getYPosition());
+             goldAmounts[i]=goldNodes[i].getAmountRemaining();
+        }
+        
+        Unit.UnitView[] units=state.getUnitIds(playerNum).toArray(new Unit.UnitView[0]);
+        for(int i=0;i<units.length;i++) {
+             if(units[i].getTemplateView().getName().equals("TownHall")) {
+                  townHallId=units[i].getID();
+                  townHallPosition=new Position(units[i].getXPosition(),units[i].getYPosition());
+                  
+             } else {
+                  peasantIds.add(units[i].getID());
+                  peasantPositions.add(new Position(units[i].getXPosition(),units[i].getYPosition()));
+             }
+        }
+        
+        woodAmount=state.getResourceAmount(playerNum, ResourceType.WOOD);
+        goldAmount=state.getResourceAmount(playerNum, ResourceType.GOLD);
+        
+        parent=null;
+        action=null;
     }
 
     /**
