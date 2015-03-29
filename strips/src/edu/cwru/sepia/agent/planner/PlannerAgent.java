@@ -2,6 +2,10 @@ package edu.cwru.sepia.agent.planner;
 
 import edu.cwru.sepia.action.Action;
 import edu.cwru.sepia.agent.Agent;
+import edu.cwru.sepia.agent.AstarAgent.LocationComparator;
+import edu.cwru.sepia.agent.AstarAgent.GameState;
+import edu.cwru.sepia.agent.AstarAgent.GameState;
+import edu.cwru.sepia.agent.AstarAgent.GameState;
 import edu.cwru.sepia.agent.planner.actions.StripsAction;
 import edu.cwru.sepia.environment.model.history.History;
 import edu.cwru.sepia.environment.model.state.State;
@@ -85,14 +89,80 @@ public class PlannerAgent extends Agent {
     /**
      * Perform an A* search of the game graph. This should return your plan as a stack of actions. This is essentially
      * the same as your first assignment. The implementations should be very similar. The difference being that your
-     * nodes are now GameState objects not MapLocation objects.
+     * nodes are now GameState objects not GameState objects.
      *
      * @param startState The state which is being planned from
      * @return The plan or null if no plan is found.
      */
     private Stack<StripsAction> AstarSearch(GameState startState) {
-        // TODO: Implement me!
-        return null;
+    	boolean goalFound = false;
+    	//define a priority queue of the size of all open spaces on the map 
+    	PriorityQueue<GameState> openset = new PriorityQueue<GameState>(startState.xSize*startState.ySize - startState.woodPositions.length - startState.goldPositions.length - 1);
+    	Hashtable<GameState, GameState> closedList = new Hashtable<GameState, GameState>();
+    	// add initial start location
+    	openset.add(startState);
+    	GameState state = null;
+    	//while the openset has children to go through and the goal hasnt been found yet
+    	while(!openset.isEmpty() && !goalFound) {
+    	     state = openset.remove();
+    	     //get all currounding valid children
+    		for(GameState child: state.generateChildren()) {
+    			//if we have found the goal, stop the search
+    			if (child.isGoal()) {
+    				goalFound = true;
+    				break;
+    			} else if(openset.contains(child)) {
+    				//iterate through the openset until we found the child node we are looking for
+    			     Iterator<GameState> iterator=openset.iterator();
+    			     GameState temp=null;
+    			     while(iterator.hasNext()) {
+    			          temp=iterator.next();
+    			          if(child.equals(temp)) {
+         			          break;
+    			          }
+    			     }
+    			     //if the cost of the node already in the openset is more expensive than the child, remove it and add the child
+         			if(temp.getCost() >= child.getCost()) {
+                         iterator.remove();
+                         openset.offer(child);
+                    }
+    			} else if(closedList.containsKey(child)) {
+    				//don't add it to the openset if it is already contained in the closedList
+    			     continue;
+    			} else {
+    				openset.add(child);
+    			}
+    		}
+    		//add the state to the closed list after going through all of it's children
+    		closedList.put(state, state);
+    		
+    	}
+    	if(!goalFound) {
+    	     System.out.println("No available path");
+    	  // return an empty path if no goal is found
+    		return new Stack<StripsAction>();
+    	}
+
+        
+        return calculateStack(state);
+    }
+    
+    /**
+     * Given the ending node, calculates the path necessary to get from start to finish.
+     * @param end
+     * @return
+     */
+    private Stack<StripsAction> calculateStack(GameState end) {
+    	Stack<StripsAction> endList = new Stack<StripsAction>();
+    	GameState currentNode = end;
+    	//while the parent exists, add the node to the endList
+    	while(currentNode.parent!=null && currentNode.action != null) {
+    		endList.push(currentNode.action);
+    		currentNode = currentNode.parent;
+    	}
+    	//remove the start node from the stack 
+    	endList.pop();
+    	return endList;
     }
 
     /**

@@ -140,6 +140,32 @@ public class GameState implements Comparable<GameState> {
     }
 
     /**
+     * Returns whether or not the gamestate is valid.
+     * @return
+     */
+    private boolean isValid(GameState currentState) {
+       //create a new temporary GameState to check against the enemy and resourcelocations
+    	//GameState temp = (new GameState(x, y, null, 0)); 
+    	for(Position position : currentState.peasantPositions) {
+    		if(!(position.inBounds(currentState.xSize, currentState.ySize))) {
+    			return false;
+    		}
+    		for(Position wood: currentState.woodPositions) {
+    	    	if(wood!=null && wood.equals(position)) {
+		              return false;
+    		    }
+    		}
+    		for(Position gold: currentState.goldPositions) {
+    	    	if(gold!=null && gold.equals(position)) {
+		              return false;
+		        }
+    		}
+
+    	}
+    	return true;
+    }
+    
+    /**
      * Write your heuristic function here. Remember this must be admissible for the properties of A* to hold. If you
      * can come up with an easy way of computing a consistent heuristic that is even better, but not strictly necessary.
      *
