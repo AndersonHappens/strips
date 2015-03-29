@@ -33,6 +33,7 @@ public class GameState implements Comparable<GameState> {
      private int goalWoodAmount;
      private int goalGoldAmount;
      private int playerNum;
+     private int cost;
      private boolean buildPeasantsAvailable;
      
      private int xSize;
@@ -71,6 +72,7 @@ public class GameState implements Comparable<GameState> {
         goalGoldAmount=requiredGold;
         goalWoodAmount=requiredWood;
         playerNum=playernum;
+        cost=0;
         buildPeasantsAvailable=buildPeasants;
         
         xSize=state.getXExtent();
@@ -158,8 +160,7 @@ public class GameState implements Comparable<GameState> {
      * @return The current cost to reach this goal
      */
     public double getCost() {
-        // TODO: Implement me!
-        return 0.0;
+        return cost;
     }
 
     /**
@@ -171,8 +172,13 @@ public class GameState implements Comparable<GameState> {
      */
     @Override
     public int compareTo(GameState o) {
-        // TODO: Implement me!
-        return 0;
+        if(getCost()-o.getCost()>0) {
+             return 1;
+        } else if(getCost()-o.getCost()<0) {
+             return -1;
+        } else {
+             return 0;
+        }
     }
 
     /**
