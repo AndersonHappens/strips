@@ -8,8 +8,8 @@ import edu.cwru.sepia.environment.model.state.State;
 import edu.cwru.sepia.environment.model.state.Unit;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Stack;
 
 /**
  * This class is used to represent the state of the game after applying one of the avaiable actions. It will also
@@ -29,6 +29,9 @@ import java.util.Stack;
  * class/structure you use to represent actions.
  */
 public class GameState implements Comparable<GameState> {
+     public static final int NONE=0;
+     public static final int GOLD=1;
+     public static final int WOOD=2;
      
      private int goalWoodAmount;
      private int goalGoldAmount;
@@ -54,6 +57,7 @@ public class GameState implements Comparable<GameState> {
      
      private ArrayList<Integer> peasantIds;
      private ArrayList<Position> peasantPositions;
+     private ArrayList<Integer> peasantCargo;
      
      private GameState parent;
      private StripsAction action;
@@ -107,6 +111,15 @@ public class GameState implements Comparable<GameState> {
              } else {
                   peasantIds.add(units[i].getID());
                   peasantPositions.add(new Position(units[i].getXPosition(),units[i].getYPosition()));
+                  if(units[i].getCargoAmount()>0) {
+                       if(units[i].getCargoType()==ResourceType.WOOD) {
+                            peasantCargo.add(new Integer(WOOD));
+                       } else if(units[i].getCargoType()==ResourceType.GOLD){
+                            peasantCargo.add(new Integer(GOLD));
+                       }
+                  } else {
+                       peasantCargo.add(new Integer(NONE));
+                  }
              }
         }
         
@@ -115,6 +128,37 @@ public class GameState implements Comparable<GameState> {
         
         parent=null;
         action=null;
+    }
+    
+    private GameState(GameState original) {
+         goalWoodAmount=original.goalWoodAmount;
+         goalGoldAmount=original.goalGoldAmount;
+         playerNum=original.playerNum;
+         cost=original.cost;
+         buildPeasantsAvailable=original.buildPeasantsAvailable;
+         
+         xSize=original.xSize;
+         ySize=original.ySize;
+         
+         woodIds=Arrays.copyOf(original.woodIds, original.woodIds.length);
+         woodPositions=Arrays.copyOf(original.woodPositions, original.woodPositions.length);
+         woodAmounts=Arrays.copyOf(original.woodAmounts, original.woodAmounts.length);
+         
+         goldIds=Arrays.copyOf(original.goldIds, original.goldIds.length);
+         goldPositions=Arrays.copyOf(original.goldPositions, original.goldPositions.length);
+         goldAmounts=Arrays.copyOf(original.goldAmounts, original.goldAmounts.length);
+         
+         townHallId=original.townHallId;
+         townHallPosition=original.townHallPosition;
+         woodAmount=original.woodAmount;
+         goldAmount=original.woodAmount;
+         
+         peasantIds=new ArrayList<Integer>(original.peasantIds);
+         peasantPositions=new ArrayList<Position>(original.peasantPositions);
+         peasantCargo=new ArrayList<Integer>(original.peasantCargo);
+         
+         parent=original.parent;
+         action=original.action;
     }
 
     /**
@@ -235,10 +279,6 @@ public class GameState implements Comparable<GameState> {
 		return buildPeasantsAvailable;
 	}
 
-	public void setBuildPeasantsAvailable(boolean buildPeasantsAvailable) {
-		this.buildPeasantsAvailable = buildPeasantsAvailable;
-	}
-
 	public int getxSize() {
 		return xSize;
 	}
@@ -350,6 +390,14 @@ public class GameState implements Comparable<GameState> {
 	public void setPeasantPositions(ArrayList<Position> peasantPositions) {
 		this.peasantPositions = peasantPositions;
 	}
+	
+	public ArrayList<Integer> getPeasantCargo() {
+          return peasantCargo;
+     }
+
+     public void setPeasantCargo(ArrayList<Integer> peasantCargo) {
+          this.peasantCargo = peasantCargo;
+     }
 
 	public GameState getParent() {
 		return parent;
@@ -393,5 +441,9 @@ public class GameState implements Comparable<GameState> {
     public int hashCode() {
         // TODO: Implement me!
         return 0;
+    }
+    
+    public GameState copyOf() {
+         return new GameState(this); 
     }
 }
