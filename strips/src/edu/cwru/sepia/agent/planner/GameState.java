@@ -6,9 +6,12 @@ import edu.cwru.sepia.environment.model.state.ResourceNode.ResourceView;
 import edu.cwru.sepia.environment.model.state.ResourceType;
 import edu.cwru.sepia.environment.model.state.State;
 import edu.cwru.sepia.environment.model.state.Unit;
+import edu.cwru.sepia.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -215,11 +218,124 @@ public class GameState implements Comparable<GameState> {
      *
      * Add a description here in your submission explaining your heuristic.
      *
+     * If is goal, return 0.
+     * Otherwise, go through all of the peasants and find the distance it would take to go to the closest necessary resource
+     * that isn't empty, and back, and add that to the current cost.
+     * Returns the sum total cost of all distances divided by the number of peasants sqaured.
+     * 
      * @return The value estimated remaining cost to reach a goal state from this state.
      */
     public double heuristic() {
-        // TODO: Implement me!
-        return 0.0;
+    	int heur = 0;
+    	if (isGoal()) {
+    		return heur;
+    	}
+    	int numPeasants = peasantPositions.size();
+    	for(int i = 0; i<numPeasants; i++) {
+    		heur += getDistanceToClosestNeededResourceAndBack(peasantPositions.get(i));
+    	} 
+        return heur /(numPeasants*numPeasants); // Weighted towards more peasants...
+    }
+    /**
+     * 
+     * @param pos
+     * @return the distance to the closest resource that is not empty and is still needed, and back from the current peasant.
+     */
+    private double getDistanceToClosestNeededResourceAndBack(Position pos) {
+    	double distance = Double.MAX_VALUE;
+    	double dist;
+    	Position post;
+    	for(int i = 0; i<goldPositions.length; i++) {
+    		post = goldPositions[i];
+    		if(goalGoldAmount <= goldAmount + getCarriedGold()) {
+    			break;
+    		}
+    		if(goldAmounts[i] < 100) {
+    			continue;
+    		}
+    		dist = pos.chebyshevDistance(post);
+    		if(dist< distance) {
+    			distance = dist -1; //-1 because don't include mine space...
+    		}
+    	}
+    	for(int i = 0; i<woodPositions.length; i++) {
+    		post = woodPositions[i];
+    		if(goalWoodAmount <= woodAmount + getCarriedWood()) {
+    			break;
+    		}
+    		if(woodAmounts[i] < 100) {
+    			continue;
+    		}
+    		dist = pos.chebyshevDistance(post);
+    		if(dist< distance) {
+    			distance = dist -1;//-1 because don't include forest space...
+    		}
+    	}
+    	// all wood and gold that is needed is gathered...
+    	if(distance == Double.MAX_VALUE) {
+    		distance = 0;
+    	}
+    	distance *= 2; // distance to forest or mine and back
+    	distance += pos.chebyshevDistance(townHallPosition); // and back to the town hall...
+    	
+    	return distance;
+    }
+    //ignore for now?
+    private Pair<Position, Integer> getClosestGold(final Position pos, int index) {
+    	ArrayList<Pair<Position, Integer>> post = new ArrayList<Pair<Position, Integer>>();
+    	for(int i = 0; i < goldPositions.length; i++) {
+    		post.add(new Pair<Position, Integer>(goldPositions[i], goldAmounts[i]));
+    	}
+    	Collections.sort(post, new Comparator<Pair<Position, Integer>>() {
+			@Override
+			public int compare(Pair<Position, Integer> o1, Pair<Position, Integer> o2) {
+				return o1.a.chebyshevDistance(pos) - o2.a.chebyshevDistance(pos);
+			}
+    	});
+    	return post.get(index);
+    }
+  //ignore for now?
+    private Pair<Position, Integer> getClosestWood(final Position pos, int index) {
+    	ArrayList<Pair<Position, Integer>> post = new ArrayList<Pair<Position, Integer>>();
+    	for(int i = 0; i < woodPositions.length; i++) {
+    		post.add(new Pair<Position, Integer>(woodPositions[i], woodAmounts[i]));
+    	}
+    	Collections.sort(post, new Comparator<Pair<Position, Integer>>() {
+			@Override
+			public int compare(Pair<Position, Integer> o1, Pair<Position, Integer> o2) {
+				return o1.a.chebyshevDistance(pos) - o2.a.chebyshevDistance(pos);
+			}
+    	});
+    	return post.get(index);
+    }
+
+    
+    /**
+     * 
+     * @return the amount of wood that is currently being carried by all peasants
+     */
+    public int getCarriedWood() {
+    	int wood = 0;
+    	for(int i = 0; i<peasantCargo.size(); i++) {
+    		if(peasantCargo.get(i) == WOOD) {
+    			wood +=100;
+    		}
+    	} 
+    	return wood;
+    }
+    
+    /**
+     * 
+     * @return the amount of gold that is currently being carried by all peasants
+     */	
+    public int getCarriedGold() {
+    	int gold = 0;
+    	for(int i = 0; i<peasantCargo.size(); i++) {
+    		if(peasantCargo.get(i) == GOLD) {
+    			gold +=100;
+    		}
+    	} 
+    	return gold;
     }
 
     /**
