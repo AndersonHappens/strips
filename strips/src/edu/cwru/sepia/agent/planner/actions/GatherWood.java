@@ -7,18 +7,19 @@ import edu.cwru.sepia.agent.planner.GameState;
 import edu.cwru.sepia.agent.planner.Position;
 
 
-public class DepositWood implements StripsAction {
+public class GatherWood implements StripsAction {
      
      private Integer[] peasantIdsInvolved;
      private Position[] peasantPositionsInvolved;
+     private Position[] treePositionsInvolved;
+     private int[] newWoodAmounts;
      private int peasantsInvolved;
-     private Position townHallPosition;
      
-     public DepositWood(int k) {
+     public GatherWood(int k) {
           peasantsInvolved=k;
           peasantIdsInvolved=new Integer[peasantsInvolved];
           peasantPositionsInvolved=new Position[peasantsInvolved];
-          townHallPosition=null;
+          treePositionsInvolved=new Position[peasantsInvolved];
      }
 
      @Override
@@ -26,13 +27,19 @@ public class DepositWood implements StripsAction {
           Integer[] peasantIDs=state.getPeasantIds().toArray(new Integer[0]);
           Position[] peasantPositions=state.getPeasantPositions().toArray(new Position[0]);
           Integer[] peasantCargo=state.getPeasantCargo().toArray(new Integer[0]);
-          townHallPosition=state.getTownHallPosition();
+          Position[] treePositions=state.getWoodPositions();
+          newWoodAmounts=state.getWoodAmounts();
           int peasantsAvailable=0;
           for(int i=0;i<peasantPositions.length && peasantsInvolved>peasantsAvailable;i++) {
-               if(peasantPositions[i].isAdjacent(townHallPosition) && peasantCargo[i].intValue()==GameState.WOOD) {
-                    peasantIdsInvolved[peasantsAvailable]=peasantIDs[i];
-                    peasantPositionsInvolved[peasantsAvailable]=peasantPositions[i];
-                    peasantsAvailable++;
+               for(int j=0;j<treePositions.length;j++) {
+                    if(peasantPositions[i].isAdjacent(treePositions[j]) && peasantCargo[i].intValue()==GameState.NONE && newWoodAmounts[j]>=100) {
+                         peasantIdsInvolved[peasantsAvailable]=peasantIDs[i];
+                         peasantPositionsInvolved[peasantsAvailable]=peasantPositions[i];
+                         treePositionsInvolved[peasantsAvailable]=treePositions[j];
+                         newWoodAmounts[j]-=100;
+                         peasantsAvailable++;
+                         break;
+                    }
                }
           }
           if(peasantsAvailable>=peasantsInvolved) {
@@ -50,11 +57,11 @@ public class DepositWood implements StripsAction {
           for(int i=0;i<peasantIDs.length;i++) {
                for(int j=0;j<peasantIdsInvolved.length;j++) {
                     if(peasantIDs[i].equals(peasantIdsInvolved.length)) {
-                         peasantCargo.set(i, GameState.NONE);
+                         peasantCargo.set(i, GameState.WOOD);
                     }
                }
           }
-          newState.setWoodAmount(newState.getWoodAmount()+peasantsInvolved*100);
+          newState.setWoodAmounts(newWoodAmounts);
           newState.setPeasantCargo(peasantCargo);
           newState.setParent(state);
           newState.setAction(this);
@@ -65,7 +72,7 @@ public class DepositWood implements StripsAction {
      public ArrayList<Action> toSepiaAction() {
           ArrayList<Action> actions=new ArrayList<Action>();
           for(int i=0;i<peasantIdsInvolved.length;i++) {
-               actions.add(Action.createPrimitiveDeposit(peasantIdsInvolved[i], peasantPositionsInvolved[i].getDirection(townHallPosition)));   
+               actions.add(Action.createPrimitiveGather(peasantIdsInvolved[i], peasantPositionsInvolved[i].getDirection(treePositionsInvolved[i])));   
           }
           return actions;
      }

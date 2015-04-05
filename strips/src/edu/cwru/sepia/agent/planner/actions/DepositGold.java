@@ -32,6 +32,7 @@ public class DepositGold implements StripsAction {
                if(peasantPositions[i].isAdjacent(townHallPosition) && peasantCargo[i].intValue()==GameState.GOLD) {
                     peasantIdsInvolved[peasantsAvailable]=peasantIDs[i];
                     peasantPositionsInvolved[peasantsAvailable]=peasantPositions[i];
+                    peasantsAvailable++;
                }
           }
           if(peasantsAvailable>=peasantsInvolved) {
@@ -57,7 +58,7 @@ public class DepositGold implements StripsAction {
           newState.setPeasantCargo(peasantCargo);
           newState.setParent(state);
           newState.setAction(this);
-          return null;
+          return newState;
      }
 
      @Override
