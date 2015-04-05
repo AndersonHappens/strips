@@ -40,4 +40,24 @@ public abstract class Move implements StripsAction {
           }
           return true;
      }
+     
+     protected class CandidateMove implements Comparable<CandidateMove> {
+          
+          protected int distance;
+          protected Integer unitId;
+          protected int unitIndex;
+          protected Position targetLocation;
+          
+          protected CandidateMove(Integer unitId, int unitIndex, Position targetLocation, int distance) {
+               this.distance=distance;
+               this.unitIndex=unitIndex;
+               this.unitId=unitId;
+               this.targetLocation=targetLocation;
+          }
+          
+          @Override
+          public int compareTo(CandidateMove o) {
+               return o.distance-this.distance;
+          }    
+     }
 }
