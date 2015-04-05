@@ -51,6 +51,9 @@ public class GatherWood implements StripsAction {
 
      @Override
      public GameState apply(GameState state) {
+          if(!preconditionsMet(state)) {
+               return null;
+          }
           GameState newState=state.copyOf();
           Integer[] peasantIDs=state.getPeasantIds().toArray(new Integer[0]);
           ArrayList<Integer> peasantCargo=state.getPeasantCargo();
