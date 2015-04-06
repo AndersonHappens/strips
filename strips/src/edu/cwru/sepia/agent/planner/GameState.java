@@ -187,37 +187,37 @@ public class GameState implements Comparable<GameState> {
     public List<GameState> generateChildren() {
         ArrayList<GameState> children=new ArrayList<GameState>();
         for(int i=0;i<peasantIds.size();i++) {
-             DepositWood depositWood=new DepositWood(i);
+             DepositWood depositWood=new DepositWood(i+1);
              GameState depositWoodState=depositWood.apply(this);
              if(depositWoodState!=null) {
                   children.add(depositWoodState);
              }
-             DepositGold depositGold=new DepositGold(i);
+             DepositGold depositGold=new DepositGold(i+1);
              GameState depositGoldState=depositGold.apply(this);
              if(depositGoldState!=null) {
                   children.add(depositGoldState);
              }
-             GatherWood gatherWood=new GatherWood(i);
+             GatherWood gatherWood=new GatherWood(i+1);
              GameState gatherWoodState=gatherWood.apply(this);
              if(gatherWoodState!=null) {
                   children.add(gatherWoodState);
              }
-             GatherGold gatherGold=new GatherGold(i);
+             GatherGold gatherGold=new GatherGold(i+1);
              GameState gatherGoldState=gatherGold.apply(this);
              if(gatherGoldState!=null) {
                   children.add(gatherGoldState);
              }
-             MoveWood moveWood=new MoveWood(i);
+             MoveWood moveWood=new MoveWood(i+1);
              GameState moveWoodState=moveWood.apply(this);
              if(moveWoodState!=null) {
                   children.add(moveWoodState);
              }
-             MoveGold moveGold=new MoveGold(i);
+             MoveGold moveGold=new MoveGold(i+1);
              GameState moveGoldState=moveGold.apply(this);
              if(moveGoldState!=null) {
                   children.add(moveGoldState);
              }
-             MoveTownHall moveTownHall=new MoveTownHall(i);
+             MoveTownHall moveTownHall=new MoveTownHall(i+1);
              GameState moveTownHallState=moveTownHall.apply(this);
              if(moveTownHallState!=null) {
                   children.add(moveTownHallState);
@@ -589,6 +589,37 @@ public class GameState implements Comparable<GameState> {
     @Override
     public boolean equals(Object o) {
         // TODO: Implement me!
+    	if(o instanceof GameState) {
+    		ArrayList<Position> poses = ((GameState) o).getPeasantPositions();
+    		if (poses.size() != peasantPositions.size()) {
+    			return false;
+    		}
+    		for(int i = 0; i< poses.size(); i++) {
+    			Position pos =  poses.get(i);
+    			if(pos == null || !pos.equals(peasantPositions.get(i))) {
+    				return false;
+    			}
+    		}
+    		int[] amounts = ((GameState) o).getGoldAmounts();
+    		if (amounts.length != goldAmounts.length) {
+    			return false;
+    		}
+    		for(int i = 0; i< amounts.length; i++) {
+    			if(amounts[i]!=(goldAmounts[i])) {
+    				return false;
+    			}
+    		}
+    		amounts = ((GameState) o).getWoodAmounts();
+    		if (amounts.length != woodAmounts.length) {
+    			return false;
+    		}
+    		for(int i = 0; i< amounts.length; i++) {
+    			if(amounts[i]!=(woodAmounts[i])) {
+    				return false;
+    			}
+    		}
+    		return true;
+    	}
         return false;
     }
 
@@ -600,8 +631,19 @@ public class GameState implements Comparable<GameState> {
      */
     @Override
     public int hashCode() {
-        // TODO: Implement me!
-        return 0;
+    	int hash = 0;
+    	for(Position pos: peasantPositions) {
+    		hash = hash + (pos.x*pos.x+pos.y*pos.y);
+		}
+
+		for(int i = 0; i< goldAmounts.length; i++) {
+			hash = hash + goldAmounts[i];
+		}
+
+		for(int i = 0; i< woodAmounts.length; i++) {
+			hash = hash + woodAmounts[i];
+		}
+        return hash;
     }
     
     public GameState copyOf() {

@@ -65,7 +65,7 @@ public class MoveGold extends Move implements StripsAction{
           newState.setPeasantPositions(newPeasantPositions);
           newState.setParent(state);
           newState.setAction(this);
-          return null;
+          return newState;
      }
 
      @Override

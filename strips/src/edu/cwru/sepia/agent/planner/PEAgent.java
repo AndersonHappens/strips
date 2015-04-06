@@ -95,24 +95,23 @@ public class PEAgent extends Agent {
      *
      * Also remember to check your plan's preconditions before executing!
      */
-    //FIXME FIXME
     @Override
     public Map<Integer, Action> middleStep(State.StateView stateView, History.HistoryView historyView) {
          System.out.println("in the middle step");
          Map<Integer, Action> map = new HashMap<Integer, Action>();
          StripsAction act=plan.pop();
-    	    Integer[] peasantIdsInvolved=act.getPeasantIdsInvolved();
-    	    for(Integer i:peasantIdsInvolved) {
-    	         UnitView currentUnit=stateView.getUnit(peasantIdMap.get(i));
-    	         if(currentUnit.getCurrentDurativeAction()!=null && currentUnit.getCurrentDurativeProgress()<1) {
-    	              plan.push(act); //wait for the durative actions to finish
-    	              return map;
-    	         }
-    	    }
-    	    ArrayList<Action> actions=createSepiaAction(act);
-    	    for(Action action:actions) {
-    	         map.put(action.getUnitId(), action);
-    	    }
+	    Integer[] peasantIdsInvolved=act.getPeasantIdsInvolved();
+	    for(Integer i:peasantIdsInvolved) {
+	         UnitView currentUnit=stateView.getUnit(peasantIdMap.get(i));
+	         if(currentUnit.getCurrentDurativeAction()!=null && currentUnit.getCurrentDurativeProgress()<1) {
+	              plan.push(act); //wait for the durative actions to finish
+	              return map;
+	         }
+	    }
+	    ArrayList<Action> actions=createSepiaAction(act);
+	    for(Action action:actions) {
+	         map.put(action.getUnitId(), action);
+	    }
          return map;
     }
 

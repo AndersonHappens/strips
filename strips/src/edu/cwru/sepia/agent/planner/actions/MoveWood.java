@@ -28,6 +28,7 @@ public class MoveWood extends Move implements StripsAction{
           Integer[] peasantCargo=state.getPeasantCargo().toArray(new Integer[0]);
           Position[] treePositions=state.getWoodPositions();
           PriorityQueue<CandidateMove> candidateMoves=new PriorityQueue<CandidateMove>();
+
           for(int i=0;i<peasantIDs.length;i++) {
                if(peasantCargo[i]==GameState.NONE) {
                     for(int j=0;j<treePositions.length;j++) {
@@ -65,7 +66,7 @@ public class MoveWood extends Move implements StripsAction{
           newState.setPeasantPositions(newPeasantPositions);
           newState.setParent(state);
           newState.setAction(this);
-          return null;
+          return newState;
      }
 
      @Override

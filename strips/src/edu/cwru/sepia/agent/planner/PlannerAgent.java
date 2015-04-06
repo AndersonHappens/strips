@@ -102,7 +102,8 @@ public class PlannerAgent extends Agent {
     	while(!openset.isEmpty() && !goalFound) {
     	     System.out.println("in astar");
     	     state = openset.remove();
-    	     System.out.println(state.heuristic());
+    	     //System.out.println(state.heuristic());
+    	     System.out.println(state.getPeasantPositions().toString());
     	     //get all valid children
     		for(GameState child: state.generateChildren()) {
     			//if we have found the goal, stop the search
