@@ -214,6 +214,7 @@ public class GameState implements Comparable<GameState> {
              }
              MoveGold moveGold=new MoveGold(i+1);
              GameState moveGoldState=moveGold.apply(this);
+             System.out.println(moveGold.apply(this));
              if(moveGoldState!=null) {
                   children.add(moveGoldState);
              }
