@@ -102,7 +102,28 @@ public class PEAgent extends Agent {
      * @return SEPIA representation of same action
      */
     private Action createSepiaAction(StripsAction action) {
-        return null;
+        if(action instanceof GatherWood) {
+             
+        } else if(action instanceof GatherGold) {
+             
+        } else if(action instanceof DepositWood) {
+             
+        } else if(action instanceof DepositGold) {
+             
+        } else if(action instanceof MoveWood) {
+             
+        } else if(action instanceof MoveGold) {
+             
+        } else if(action instanceof MoveTownHall) {
+             
+        } else {
+             try {
+                  throw new Exception("Error: Unexpected StripsAction");
+             } catch (Exception e) {
+                  System.err.println(e);
+                  e.printStackTrace();
+             }
+        }
     }
 
     @Override
