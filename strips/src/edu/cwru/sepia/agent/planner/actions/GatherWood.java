@@ -1,6 +1,7 @@
 package edu.cwru.sepia.agent.planner.actions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import edu.cwru.sepia.action.Action;
 import edu.cwru.sepia.agent.planner.GameState;
@@ -28,10 +29,11 @@ public class GatherWood implements StripsAction {
           Position[] peasantPositions=state.getPeasantPositions().toArray(new Position[0]);
           Integer[] peasantCargo=state.getPeasantCargo().toArray(new Integer[0]);
           Position[] treePositions=state.getWoodPositions();
-          newWoodAmounts=state.getWoodAmounts();
+          newWoodAmounts=Arrays.copyOf(state.getWoodAmounts(),state.getWoodAmounts().length);
           int peasantsAvailable=0;
           for(int i=0;i<peasantPositions.length && peasantsInvolved>peasantsAvailable;i++) {
                for(int j=0;j<treePositions.length;j++) {
+                    System.out.println(peasantPositions[i]+"  "+treePositions[j]+"  "+newWoodAmounts[j]);
                     if(peasantPositions[i].isAdjacent(treePositions[j]) && peasantCargo[i].intValue()==GameState.NONE && newWoodAmounts[j]>=100) {
                          peasantIdsInvolved[peasantsAvailable]=peasantIDs[i];
                          peasantPositionsInvolved[peasantsAvailable]=peasantPositions[i];
@@ -51,12 +53,12 @@ public class GatherWood implements StripsAction {
 
      @Override
      public GameState apply(GameState state) {
-          if(!preconditionsMet(state)) {
+          GameState newState=state.copyOf();
+          if(!preconditionsMet(newState)) {
                return null;
           }
-          GameState newState=state.copyOf();
-          Integer[] peasantIDs=state.getPeasantIds().toArray(new Integer[0]);
-          ArrayList<Integer> peasantCargo=state.getPeasantCargo();
+          Integer[] peasantIDs=newState.getPeasantIds().toArray(new Integer[0]);
+          ArrayList<Integer> peasantCargo=new ArrayList<Integer>(newState.getPeasantCargo());
           for(int i=0;i<peasantIDs.length;i++) {
                for(int j=0;j<peasantIdsInvolved.length;j++) {
                     if(peasantIDs[i].equals(peasantIdsInvolved.length)) {

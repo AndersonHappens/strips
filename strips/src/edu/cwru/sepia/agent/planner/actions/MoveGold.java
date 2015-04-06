@@ -62,10 +62,10 @@ public class MoveGold extends Move implements StripsAction{
 
      @Override
      public GameState apply(GameState state) {
-          if(!preconditionsMet(state)) {
+          GameState newState=state.copyOf();
+          if(!preconditionsMet(newState)) {
                return null;
           }
-          GameState newState=state.copyOf();
           newState.setPeasantPositions(newPeasantPositions);
           newState.setParent(state);
           newState.setAction(this);
