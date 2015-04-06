@@ -106,18 +106,18 @@ public class PlannerAgent extends Agent {
     	GameState state = null;
     	//while the openset has children to go through and the goal hasnt been found yet
     	while(!openset.isEmpty() && !goalFound) {
-    	     System.out.println("in astar");
+    	    // System.out.println("in astar");
     	     state = openset.remove();
     	     //System.out.println(state.heuristic());
-    	     System.out.println(state.getPeasantPositions().toString());
-    	     System.out.println(state.getGoldAmount() + " " + state.getWoodAmount());
-    	     printIntArray(state.getWoodAmounts());
+    	    // System.out.println(state.getPeasantPositions().toString());
+    	    // System.out.println(state.getGoldAmount() + " " + state.getWoodAmount());
+    	     //printIntArray(state.getWoodAmounts());
     	     //get all valid children
     		for(GameState child: state.generateChildren()) {
     			//if we have found the goal, stop the search
     			if (child.isGoal()) {
     			     System.out.println("Goal found");
-    			     System.out.println(child.getGoldAmount()+"  "+child.getWoodAmount());
+    			    // System.out.println(child.getGoldAmount()+"  "+child.getWoodAmount());
     				goalFound = true;
     				break;
     			} else if(openset.contains(child)) {
@@ -137,21 +137,25 @@ public class PlannerAgent extends Agent {
                     }
     			} else if(closedList.containsKey(child)) {
     				//don't add it to the openset if it is already contained in the closedList
+    				System.out.println("Hash duplicated is: " + child.hashCode() + " gold is " + child.getGoldAmount() +" wood is " +child.getWoodAmount() + " Position is: " + child.getPeasantPositions().get(0).toString());
     			     continue;
     			} else {
     				openset.add(child);
+    				System.out.println("Hash is: " + child.hashCode() + " gold is " + child.getGoldAmount() +" wood is " +child.getWoodAmount() + " Position is: " + child.getPeasantPositions().get(0).toString());
     			}
     		}
     		//add the state to the closed list after going through all of it's children
     		closedList.put(state, state);
     		
+    		
     	}
     	if(!goalFound) {
     	     System.out.println("No available path");
+    	     
     	  // return an empty path if no goal is found
     		return new Stack<StripsAction>();
     	}
-    	     System.out.println("finished astar");
+    	     //System.out.println("finished astar");
         return calculateStack(state);
     }
     

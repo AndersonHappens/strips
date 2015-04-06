@@ -102,8 +102,8 @@ public class PEAgent extends Agent {
          System.out.println("in the middle step");
          Map<Integer, Action> map = new HashMap<Integer, Action>();
          int currentTurn = stateView.getTurnNumber();
-         System.out.println(plan);
-	    System.out.println(historyView.getCommandFeedback(playernum, currentTurn-1).values());
+         //System.out.println(plan);
+	   // System.out.println(historyView.getCommandFeedback(playernum, currentTurn-1).values());
 	    for(ActionResult feedback : historyView.getCommandFeedback(playernum, currentTurn-1).values())
          {
                if(feedback.getFeedback() == ActionFeedback.INCOMPLETE) {
@@ -114,7 +114,7 @@ public class PEAgent extends Agent {
 	    ArrayList<Action> actions=createSepiaAction(act);
 	    for(Action action:actions) {
 	         map.put(action.getUnitId(), action);
-	         System.out.println(action.getUnitId()+"  "+action);
+	        // System.out.println(action.getUnitId()+"  "+action);
 	    }
          return map;
     }

@@ -58,7 +58,7 @@ public class DepositGold implements StripsAction {
                }
           }
           newState.setGoldAmount(newState.getGoldAmount()+peasantsInvolved*100);
-          System.out.println("Gold amounts: "+newState.getGoldAmount()+"  "+state.getGoldAmount());
+         // System.out.println("Gold amounts: "+newState.getGoldAmount()+"  "+state.getGoldAmount());
           newState.setPeasantCargo(peasantCargo);
           newState.setParent(state);
           newState.setAction(this);
