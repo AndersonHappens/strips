@@ -90,10 +90,26 @@ public class PEAgent extends Agent {
      *
      * Also remember to check your plan's preconditions before executing!
      */
+    //FIXME FIXME
     @Override
     public Map<Integer, Action> middleStep(State.StateView stateView, History.HistoryView historyView) {
-        // TODO: Implement me!
-        return null;
+        Map<Integer, Action> map = new HashMap<Integer, Action>();
+        GameState state = null; //HOW DO WE GET THE INITIAL STATE!????
+        StripsAction act;
+    	while(!plan.isEmpty()) {
+    		if(stateView.getUnit(peasantIdMap.get(peasantTemplateId).intValue()).getCurrentDurativeAction()!=null && 
+    				stateView.getUnit(peasantIdMap.get(peasantTemplateId).intValue()).getCurrentDurativeProgress() < 1) {
+    			continue; //do nothing
+    		}
+    		act = plan.pop();
+        	if(act.preconditionsMet(state)) {
+        		state = act.apply(state);
+        		for(Action action : act.toSepiaAction()) {
+        		map.put(peasantIdMap.get(peasantTemplateId),action); // I think that's how this works.. but how do we get templateId?
+        		}
+        	}
+        }
+        return map;
     }
 
     /**
@@ -102,6 +118,8 @@ public class PEAgent extends Agent {
      * @return SEPIA representation of same action
      */
     private Action createSepiaAction(StripsAction action) {
+    	//TODO is this actually necessary?
+    	
         return null;
     }
 
