@@ -81,6 +81,12 @@ public class PlannerAgent extends Agent {
     public void loadPlayerData(InputStream inputStream) {
 
     }
+    public static void printIntArray(int[] arr) {
+    	for(Integer in: arr) {
+    		System.out.print(in + " ");
+    	}
+    	System.out.println();
+    }
 
     /**
      * Perform an A* search of the game graph. This should return your plan as a stack of actions. This is essentially
@@ -104,6 +110,8 @@ public class PlannerAgent extends Agent {
     	     state = openset.remove();
     	     //System.out.println(state.heuristic());
     	     System.out.println(state.getPeasantPositions().toString());
+    	     System.out.println(state.getGoldAmount() + " " + state.getWoodAmount());
+    	     printIntArray(state.getWoodAmounts());
     	     //get all valid children
     		for(GameState child: state.generateChildren()) {
     			//if we have found the goal, stop the search
@@ -159,7 +167,7 @@ public class PlannerAgent extends Agent {
     		currentNode = currentNode.getParent();
     	}
     	//remove the start node from the stack 
-    	endList.pop();
+    	//endList.pop();
     	return endList;
     }
 

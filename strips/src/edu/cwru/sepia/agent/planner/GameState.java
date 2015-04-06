@@ -636,13 +636,15 @@ public class GameState implements Comparable<GameState> {
     		hash = hash + (pos.x*pos.x+pos.y*pos.y);
 		}
 
-		for(int i = 0; i< goldAmounts.length; i++) {
+		/*for(int i = 0; i< goldAmounts.length; i++) {
 			hash = hash + goldAmounts[i];
 		}
 
 		for(int i = 0; i< woodAmounts.length; i++) {
 			hash = hash + woodAmounts[i];
-		}
+		} */
+		hash = hash + goldAmount;
+		hash = hash + woodAmount;
         return hash;
     }
     

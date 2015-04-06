@@ -29,7 +29,7 @@ public class MoveTownHall extends Move implements StripsAction{
           Position townHallPosition=state.getTownHallPosition();
           PriorityQueue<CandidateMove> candidateMoves=new PriorityQueue<CandidateMove>();
           for(int i=0;i<peasantIDs.length;i++) {
-               if(peasantCargo[i]==GameState.NONE) {
+               if(peasantCargo[i]!=GameState.NONE) {
                     if(!peasantPositions[i].isAdjacent(townHallPosition)) {
                          for(Position p:townHallPosition.getAdjacentPositions()) {
                               candidateMoves.add(new CandidateMove(peasantIDs[i],i,p,p.chebyshevDistance(peasantPositions[i])));
