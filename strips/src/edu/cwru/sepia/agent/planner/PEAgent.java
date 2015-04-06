@@ -1,6 +1,8 @@
 package edu.cwru.sepia.agent.planner;
 
 import edu.cwru.sepia.action.Action;
+import edu.cwru.sepia.action.ActionFeedback;
+import edu.cwru.sepia.action.ActionResult;
 import edu.cwru.sepia.agent.Agent;
 import edu.cwru.sepia.agent.planner.actions.*;
 import edu.cwru.sepia.environment.model.history.History;
@@ -99,18 +101,20 @@ public class PEAgent extends Agent {
     public Map<Integer, Action> middleStep(State.StateView stateView, History.HistoryView historyView) {
          System.out.println("in the middle step");
          Map<Integer, Action> map = new HashMap<Integer, Action>();
-         StripsAction act=plan.pop();
-	    Integer[] peasantIdsInvolved=act.getPeasantIdsInvolved();
-	    for(Integer i:peasantIdsInvolved) {
-	         UnitView currentUnit=stateView.getUnit(peasantIdMap.get(i));
-	         if(currentUnit.getCurrentDurativeAction()!=null && currentUnit.getCurrentDurativeProgress()<1) {
-	              plan.push(act); //wait for the durative actions to finish
-	              return map;
-	         }
-	    }
+         int currentTurn = stateView.getTurnNumber();
+         System.out.println(plan);
+	    System.out.println(historyView.getCommandFeedback(playernum, currentTurn-1).values());
+	    for(ActionResult feedback : historyView.getCommandFeedback(playernum, currentTurn-1).values())
+         {
+               if(feedback.getFeedback() == ActionFeedback.INCOMPLETE) {
+                    return map;
+               }
+         }
+	    StripsAction act=plan.pop();
 	    ArrayList<Action> actions=createSepiaAction(act);
 	    for(Action action:actions) {
 	         map.put(action.getUnitId(), action);
+	         System.out.println(action.getUnitId()+"  "+action);
 	    }
          return map;
     }

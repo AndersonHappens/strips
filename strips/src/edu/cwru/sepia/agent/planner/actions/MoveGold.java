@@ -22,6 +22,7 @@ public class MoveGold extends Move implements StripsAction{
      
      @Override
      public boolean preconditionsMet(GameState state) {
+          System.out.println("called movegold preconditions met");
           Integer[] peasantIDs=state.getPeasantIds().toArray(new Integer[0]);
           Position[] peasantPositions=state.getPeasantPositions().toArray(new Position[0]);
           newPeasantPositions=new ArrayList<Position>(state.getPeasantPositions());
@@ -39,6 +40,7 @@ public class MoveGold extends Move implements StripsAction{
                     }
                }
           }
+          System.out.println(candidateMoves);
           peasantIdsInvolved=new ArrayList<Integer>();
           targetPositions=new ArrayList<Position>();
           while(peasantIdsInvolved.size()<peasantsInvolved && !candidateMoves.isEmpty()) {
@@ -48,6 +50,7 @@ public class MoveGold extends Move implements StripsAction{
                     targetPositions.add(current.targetLocation);
                     newPeasantPositions.set(current.unitIndex, current.targetLocation);
                }
+               System.out.println("PeasantIds for move gold: "+peasantIdsInvolved);
           }
           if(peasantIdsInvolved.size()>=peasantsInvolved) {
                return true;

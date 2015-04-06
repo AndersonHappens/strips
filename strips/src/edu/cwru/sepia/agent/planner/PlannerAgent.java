@@ -116,6 +116,8 @@ public class PlannerAgent extends Agent {
     		for(GameState child: state.generateChildren()) {
     			//if we have found the goal, stop the search
     			if (child.isGoal()) {
+    			     System.out.println("Goal found");
+    			     System.out.println(child.getGoldAmount()+"  "+child.getWoodAmount());
     				goalFound = true;
     				break;
     			} else if(openset.contains(child)) {

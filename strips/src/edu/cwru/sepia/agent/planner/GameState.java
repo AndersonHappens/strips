@@ -214,6 +214,7 @@ public class GameState implements Comparable<GameState> {
              }
              MoveGold moveGold=new MoveGold(i+1);
              GameState moveGoldState=moveGold.apply(this);
+             System.out.println(moveGold.apply(this));
              if(moveGoldState!=null) {
                   children.add(moveGoldState);
              }
@@ -228,6 +229,11 @@ public class GameState implements Comparable<GameState> {
         if(buildPeasantState!=null) {
              children.add(buildPeasantState);
         }
+        System.out.print("Children: ");
+        for(GameState child:children) {
+             System.out.print(child.getAction()+", ");
+        }
+        System.out.println();
         return children;
     }
 
@@ -276,9 +282,11 @@ public class GameState implements Comparable<GameState> {
     		return heur;
     	}
     	int numPeasants = peasantPositions.size();
-    	for(int i = 0; i<numPeasants; i++) {
+    	/*for(int i = 0; i<numPeasants; i++) {
     		heur += getDistanceToClosestNeededResourceAndBack(peasantPositions.get(i));
-    	} 
+    	}*/
+    	heur+=getGoalGoldAmount()-getGoldAmount()-getCarriedGold()/2+getGoalWoodAmount()-getWoodAmount()-getCarriedWood()/2;
+    	System.out.println("hueristic: "+heur);
         return heur /(numPeasants*numPeasants); // Weighted towards more peasants...
     }
     /**
@@ -403,9 +411,10 @@ public class GameState implements Comparable<GameState> {
      */
     @Override
     public int compareTo(GameState o) {
-        if(getCost()-o.getCost()>0) {
+         double val=getCost()+heuristic()-o.getCost()-o.heuristic();
+        if(val>0) {
              return 1;
-        } else if(getCost()-o.getCost()<0) {
+        } else if(val<0) {
              return -1;
         } else {
              return 0;
@@ -588,7 +597,6 @@ public class GameState implements Comparable<GameState> {
      */
     @Override
     public boolean equals(Object o) {
-        // TODO: Implement me!
     	if(o instanceof GameState) {
     		ArrayList<Position> poses = ((GameState) o).getPeasantPositions();
     		if (poses.size() != peasantPositions.size()) {
