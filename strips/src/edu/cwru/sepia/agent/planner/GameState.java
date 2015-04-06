@@ -1,6 +1,6 @@
 package edu.cwru.sepia.agent.planner;
 
-import edu.cwru.sepia.agent.planner.actions.StripsAction;
+import edu.cwru.sepia.agent.planner.actions.*;
 import edu.cwru.sepia.environment.model.state.ResourceNode;
 import edu.cwru.sepia.environment.model.state.ResourceNode.ResourceView;
 import edu.cwru.sepia.environment.model.state.ResourceType;
@@ -81,6 +81,9 @@ public class GameState implements Comparable<GameState> {
         playerNum=playernum;
         cost=0;
         buildPeasantsAvailable=buildPeasants;
+        peasantIds=new ArrayList<Integer>();
+        peasantPositions=new ArrayList<Position>();
+        peasantCargo=new ArrayList<Integer>();
         
         xSize=state.getXExtent();
         ySize=state.getYExtent();
@@ -105,7 +108,7 @@ public class GameState implements Comparable<GameState> {
              goldAmounts[i]=goldNodes[i].getAmountRemaining();
         }
         
-        Unit.UnitView[] units=state.getUnitIds(playerNum).toArray(new Unit.UnitView[0]);
+        Unit.UnitView[] units=state.getUnits(playerNum).toArray(new Unit.UnitView[0]);
         for(int i=0;i<units.length;i++) {
              if(units[i].getTemplateView().getName().equals("TownHall")) {
                   townHallId=units[i].getID();
@@ -182,8 +185,50 @@ public class GameState implements Comparable<GameState> {
      * @return A list of the possible successor states and their associated actions
      */
     public List<GameState> generateChildren() {
-        // TODO: Implement me!
-        return null;
+        ArrayList<GameState> children=new ArrayList<GameState>();
+        for(int i=0;i<peasantIds.size();i++) {
+             DepositWood depositWood=new DepositWood(i);
+             GameState depositWoodState=depositWood.apply(this);
+             if(depositWoodState!=null) {
+                  children.add(depositWoodState);
+             }
+             DepositGold depositGold=new DepositGold(i);
+             GameState depositGoldState=depositGold.apply(this);
+             if(depositGoldState!=null) {
+                  children.add(depositGoldState);
+             }
+             GatherWood gatherWood=new GatherWood(i);
+             GameState gatherWoodState=gatherWood.apply(this);
+             if(gatherWoodState!=null) {
+                  children.add(gatherWoodState);
+             }
+             GatherGold gatherGold=new GatherGold(i);
+             GameState gatherGoldState=gatherGold.apply(this);
+             if(gatherGoldState!=null) {
+                  children.add(gatherGoldState);
+             }
+             MoveWood moveWood=new MoveWood(i);
+             GameState moveWoodState=moveWood.apply(this);
+             if(moveWoodState!=null) {
+                  children.add(moveWoodState);
+             }
+             MoveGold moveGold=new MoveGold(i);
+             GameState moveGoldState=moveGold.apply(this);
+             if(moveGoldState!=null) {
+                  children.add(moveGoldState);
+             }
+             MoveTownHall moveTownHall=new MoveTownHall(i);
+             GameState moveTownHallState=moveTownHall.apply(this);
+             if(moveTownHallState!=null) {
+                  children.add(moveTownHallState);
+             }
+        }
+        BuildPeasant buildPeasant=new BuildPeasant();
+        GameState buildPeasantState=buildPeasant.apply(this);
+        if(buildPeasantState!=null) {
+             children.add(buildPeasantState);
+        }
+        return children;
     }
 
     /**

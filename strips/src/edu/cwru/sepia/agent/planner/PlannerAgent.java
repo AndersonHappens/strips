@@ -100,8 +100,10 @@ public class PlannerAgent extends Agent {
     	GameState state = null;
     	//while the openset has children to go through and the goal hasnt been found yet
     	while(!openset.isEmpty() && !goalFound) {
+    	     System.out.println("in astar");
     	     state = openset.remove();
-    	     //get all currounding valid children
+    	     System.out.println(state.heuristic());
+    	     //get all valid children
     		for(GameState child: state.generateChildren()) {
     			//if we have found the goal, stop the search
     			if (child.isGoal()) {
@@ -138,8 +140,7 @@ public class PlannerAgent extends Agent {
     	  // return an empty path if no goal is found
     		return new Stack<StripsAction>();
     	}
-
-        
+    	     System.out.println("finished astar");
         return calculateStack(state);
     }
     
