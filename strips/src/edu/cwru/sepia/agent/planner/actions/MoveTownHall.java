@@ -7,14 +7,14 @@ import edu.cwru.sepia.action.Action;
 import edu.cwru.sepia.agent.planner.GameState;
 import edu.cwru.sepia.agent.planner.Position;
 
-public class MoveWood extends Move implements StripsAction{
+public class MoveTownHall extends Move implements StripsAction{
 
      private ArrayList<Integer> peasantIdsInvolved;
      private ArrayList<Position> targetPositions;
      private ArrayList<Position> newPeasantPositions;
      private int peasantsInvolved;
      
-     public MoveWood(int k) {
+     public MoveTownHall(int k) {
           peasantsInvolved=k;
           peasantIdsInvolved=new ArrayList<Integer>();
           newPeasantPositions=new ArrayList<Position>();
@@ -26,15 +26,13 @@ public class MoveWood extends Move implements StripsAction{
           Position[] peasantPositions=state.getPeasantPositions().toArray(new Position[0]);
           newPeasantPositions=new ArrayList<Position>(state.getPeasantPositions());
           Integer[] peasantCargo=state.getPeasantCargo().toArray(new Integer[0]);
-          Position[] treePositions=state.getWoodPositions();
+          Position townHallPosition=state.getTownHallPosition();
           PriorityQueue<CandidateMove> candidateMoves=new PriorityQueue<CandidateMove>();
           for(int i=0;i<peasantIDs.length;i++) {
                if(peasantCargo[i]==GameState.NONE) {
-                    for(int j=0;j<treePositions.length;j++) {
-                         if(!peasantPositions[i].isAdjacent(treePositions[j])) {
-                              for(Position p:treePositions[i].getAdjacentPositions()) {
-                                   candidateMoves.add(new CandidateMove(peasantIDs[i],i,p,p.chebyshevDistance(peasantPositions[i])));
-                              }
+                    if(!peasantPositions[i].isAdjacent(townHallPosition)) {
+                         for(Position p:townHallPosition.getAdjacentPositions()) {
+                              candidateMoves.add(new CandidateMove(peasantIDs[i],i,p,p.chebyshevDistance(peasantPositions[i])));
                          }
                     }
                }
