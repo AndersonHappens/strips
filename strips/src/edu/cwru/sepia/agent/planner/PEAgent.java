@@ -8,9 +8,11 @@ import edu.cwru.sepia.environment.model.state.ResourceType;
 import edu.cwru.sepia.environment.model.state.State;
 import edu.cwru.sepia.environment.model.state.Template;
 import edu.cwru.sepia.environment.model.state.Unit;
+import edu.cwru.sepia.environment.model.state.Unit.UnitView;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -29,6 +31,9 @@ public class PEAgent extends Agent {
     private Map<Integer, Integer> peasantIdMap;
     private int townhallId;
     private int peasantTemplateId;
+    
+    private int newPeasantId;
+    private boolean newPeasantCreated;
 
     public PEAgent(int playernum, Stack<StripsAction> plan) {
         super(playernum);
@@ -90,10 +95,23 @@ public class PEAgent extends Agent {
      *
      * Also remember to check your plan's preconditions before executing!
      */
+    //FIXME FIXME
     @Override
     public Map<Integer, Action> middleStep(State.StateView stateView, History.HistoryView historyView) {
-        // TODO: Implement me!
-        return null;
+         Map<Integer, Action> map = new HashMap<Integer, Action>();
+         StripsAction act=plan.pop();
+    	    Integer[] peasantIdsInvolved=act.getPeasantIdsInvolved();
+    	    for(Integer i:peasantIdsInvolved) {
+    	         UnitView currentUnit=stateView.getUnit(peasantIdMap.get(i));
+    	         if(currentUnit.getCurrentDurativeAction()!=null && currentUnit.getCurrentDurativeProgress()<1) {
+    	              plan.push(act); //wait for the durative actions to finish
+    	         }
+    	    }
+    	    ArrayList<Action> actions=createSepiaAction(act);
+    	    for(Action action:actions) {
+    	         map.put(action.getUnitId(), action);
+    	    }
+         return map;
     }
 
     /**
@@ -101,21 +119,66 @@ public class PEAgent extends Agent {
      * @param action StripsAction
      * @return SEPIA representation of same action
      */
-    private Action createSepiaAction(StripsAction action) {
+    private ArrayList<Action> createSepiaAction(StripsAction action) {
+        ArrayList<Action> actions=new ArrayList<Action>();
         if(action instanceof GatherWood) {
-             
+             GatherWood act=(GatherWood) action;
+             Integer[] peasantIdsInvolved = act.getPeasantIdsInvolved();
+             Position[] peasantPositionsInvolved=act.getPeasantPositionsInvolved();
+             Position[] treePositionsInvolved=act.getTreePositionsInvolved();
+             for(int i=0;i<peasantIdsInvolved.length;i++) {
+                  actions.add(Action.createPrimitiveGather(peasantIdMap.get(peasantIdsInvolved[i]), peasantPositionsInvolved[i].getDirection(treePositionsInvolved[i])));   
+             }
         } else if(action instanceof GatherGold) {
-             
+             GatherGold act=(GatherGold) action;
+             Integer[] peasantIdsInvolved = act.getPeasantIdsInvolved();
+             Position[] peasantPositionsInvolved=act.getPeasantPositionsInvolved();
+             Position[] minePositionsInvolved=act.getMinePositionsInvolved();
+             for(int i=0;i<peasantIdsInvolved.length;i++) {
+                  actions.add(Action.createPrimitiveGather(peasantIdMap.get(peasantIdsInvolved[i]), peasantPositionsInvolved[i].getDirection(minePositionsInvolved[i])));   
+             }
         } else if(action instanceof DepositWood) {
-             
+             DepositWood act=(DepositWood) action;
+             Integer[] peasantIdsInvolved = act.getPeasantIdsInvolved();
+             Position[] peasantPositionsInvolved=act.getPeasantPositionsInvolved();
+             Position townHallPosition=act.getTownHallPosition();
+             for(int i=0;i<peasantIdsInvolved.length;i++) {
+                  actions.add(Action.createPrimitiveDeposit(peasantIdMap.get(peasantIdsInvolved[i]), peasantPositionsInvolved[i].getDirection(townHallPosition)));   
+             } 
         } else if(action instanceof DepositGold) {
-             
+             DepositGold act=(DepositGold) action;
+             Integer[] peasantIdsInvolved = act.getPeasantIdsInvolved();
+             Position[] peasantPositionsInvolved=act.getPeasantPositionsInvolved();
+             Position townHallPosition=act.getTownHallPosition();
+             for(int i=0;i<peasantIdsInvolved.length;i++) {
+                  actions.add(Action.createPrimitiveDeposit(peasantIdMap.get(peasantIdsInvolved[i]), peasantPositionsInvolved[i].getDirection(townHallPosition)));   
+             }
         } else if(action instanceof MoveWood) {
-             
+             MoveWood act=(MoveWood) action;
+             Integer[] peasantIdsInvolved=act.getPeasantIdsInvolved();
+             ArrayList<Position> targetPositions=act.getTargetPositions();
+             for(int i=0;i<peasantIdsInvolved.length;i++) {
+                  actions.add(Action.createCompoundMove(peasantIdMap.get(peasantIdsInvolved[i]),targetPositions.get(i).x,targetPositions.get(i).y));
+             }
         } else if(action instanceof MoveGold) {
-             
+             MoveGold act=(MoveGold) action;
+             Integer[] peasantIdsInvolved=act.getPeasantIdsInvolved();
+             ArrayList<Position> targetPositions=act.getTargetPositions();
+             for(int i=0;i<peasantIdsInvolved.length;i++) {
+                  actions.add(Action.createCompoundMove(peasantIdMap.get(peasantIdsInvolved[i]),targetPositions.get(i).x,targetPositions.get(i).y));
+             }
         } else if(action instanceof MoveTownHall) {
-             
+             MoveTownHall act=(MoveTownHall) action;
+             Integer[] peasantIdsInvolved=act.getPeasantIdsInvolved();
+             ArrayList<Position> targetPositions=act.getTargetPositions();
+             for(int i=0;i<peasantIdsInvolved.length;i++) {
+                  actions.add(Action.createCompoundMove(peasantIdMap.get(peasantIdsInvolved[i]),targetPositions.get(i).x,targetPositions.get(i).y));
+             }
+        } else if(action instanceof BuildPeasant) {
+             BuildPeasant act=(BuildPeasant) action;
+             newPeasantId=act.getNewPeasantId();
+             actions.add(Action.createPrimitiveProduction(townhallId, peasantTemplateId));
+             newPeasantCreated=true;      
         } else {
              try {
                   throw new Exception("Error: Unexpected StripsAction");
@@ -124,11 +187,15 @@ public class PEAgent extends Agent {
                   e.printStackTrace();
              }
         }
+        return actions;
     }
 
     @Override
     public void terminalStep(State.StateView stateView, History.HistoryView historyView) {
-
+         if(newPeasantCreated) {
+              peasantIdMap.put(newPeasantId, stateView.getAllUnitIds().get(stateView.getAllUnitIds().size()-1));
+              newPeasantCreated=false;
+         }
     }
 
     @Override

@@ -6,6 +6,8 @@ import edu.cwru.sepia.action.Action;
 import edu.cwru.sepia.agent.planner.GameState;
 
 public class BuildPeasant implements StripsAction {
+     
+     private int newPeasantId;
 
      @Override
      public boolean preconditionsMet(GameState state) {
@@ -18,7 +20,8 @@ public class BuildPeasant implements StripsAction {
                return null;
           }
           GameState newState=state.copyOf();
-          newState.getPeasantIds().add(newState.getPeasantIds().size()+1);
+          newPeasantId=newState.getPeasantIds().size()+1;
+          newState.getPeasantIds().add(newPeasantId);
           newState.getPeasantCargo().add(GameState.NONE);
           //the new peasants location is slightly off, this will be fixed after it's first move
           newState.getPeasantPositions().add(state.getTownHallPosition());
@@ -32,5 +35,13 @@ public class BuildPeasant implements StripsAction {
           // TODO Auto-generated method stub
           return null;
      }
+     
+     public int getNewPeasantId() {
+          return newPeasantId;
+     }
 
+     @Override
+     public Integer[] getPeasantIdsInvolved() {
+          return new Integer[0];
+     }
 }

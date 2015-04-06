@@ -76,4 +76,12 @@ public class MoveGold extends Move implements StripsAction{
           }
           return moves;
      }
+
+     public Integer[] getPeasantIdsInvolved() {
+          return peasantIdsInvolved.toArray(new Integer[0]);
+     }
+
+     public ArrayList<Position> getTargetPositions() {
+          return targetPositions;
+     }
 }

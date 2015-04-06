@@ -71,6 +71,18 @@ public class GatherGold implements StripsAction {
           return newState;
      }
 
+     public Integer[] getPeasantIdsInvolved() {
+          return peasantIdsInvolved;
+     }
+
+     public Position[] getPeasantPositionsInvolved() {
+          return peasantPositionsInvolved;
+     }
+
+     public Position[] getMinePositionsInvolved() {
+          return minePositionsInvolved;
+     }
+
      @Override
      public ArrayList<Action> toSepiaAction() {
           ArrayList<Action> actions=new ArrayList<Action>();

@@ -41,7 +41,7 @@ public class DepositWood implements StripsAction {
                return false;
           }
      }
-
+     
      @Override
      public GameState apply(GameState state) {
           if(!preconditionsMet(state)) {
@@ -71,5 +71,17 @@ public class DepositWood implements StripsAction {
                actions.add(Action.createPrimitiveDeposit(peasantIdsInvolved[i], peasantPositionsInvolved[i].getDirection(townHallPosition)));   
           }
           return actions;
+     }
+     
+     public Integer[] getPeasantIdsInvolved() {
+          return peasantIdsInvolved;
+     }
+
+     public Position[] getPeasantPositionsInvolved() {
+          return peasantPositionsInvolved;
+     }
+
+     public Position getTownHallPosition() {
+          return townHallPosition;
      }
 }

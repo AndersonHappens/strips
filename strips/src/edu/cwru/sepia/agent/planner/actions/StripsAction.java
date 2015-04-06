@@ -47,4 +47,6 @@ public interface StripsAction {
      * @return an ArrayList of SEPIA actions corresponding to this STRIPS action
      */
     public ArrayList<Action> toSepiaAction();
+    
+    public Integer[] getPeasantIdsInvolved();
 }

@@ -72,4 +72,17 @@ public class DepositGold implements StripsAction {
           }
           return actions;
      }
+
+     public Integer[] getPeasantIdsInvolved() {
+          return peasantIdsInvolved;
+     }
+
+     public Position[] getPeasantPositionsInvolved() {
+          return peasantPositionsInvolved;
+     }
+
+     public Position getTownHallPosition() {
+          return townHallPosition;
+     }
+     
 }

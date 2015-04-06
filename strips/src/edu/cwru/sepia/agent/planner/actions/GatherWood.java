@@ -79,4 +79,16 @@ public class GatherWood implements StripsAction {
           }
           return actions;
      }
+
+     public Integer[] getPeasantIdsInvolved() {
+          return peasantIdsInvolved;
+     }
+
+     public Position[] getPeasantPositionsInvolved() {
+          return peasantPositionsInvolved;
+     }
+
+     public Position[] getTreePositionsInvolved() {
+          return treePositionsInvolved;
+     }
 }
