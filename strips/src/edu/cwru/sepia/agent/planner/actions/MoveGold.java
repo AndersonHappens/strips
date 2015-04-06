@@ -29,7 +29,7 @@ public class MoveGold extends Move implements StripsAction{
           Position[] minePositions=state.getGoldPositions();
           PriorityQueue<CandidateMove> candidateMoves=new PriorityQueue<CandidateMove>();
           for(int i=0;i<peasantIDs.length;i++) {
-               if(peasantCargo[i]!=GameState.NONE) {
+               if(peasantCargo[i]==GameState.NONE) {
                     for(int j=0;j<minePositions.length;j++) {
                          if(!peasantPositions[i].isAdjacent(minePositions[j])) {
                               for(Position p:minePositions[i].getAdjacentPositions()) {
