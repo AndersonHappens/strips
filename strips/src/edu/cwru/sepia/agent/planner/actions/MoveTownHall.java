@@ -1,6 +1,7 @@
 package edu.cwru.sepia.agent.planner.actions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.PriorityQueue;
 
 import edu.cwru.sepia.action.Action;
@@ -26,6 +27,7 @@ public class MoveTownHall extends Move implements StripsAction{
           Position[] peasantPositions=state.getPeasantPositions().toArray(new Position[0]);
           newPeasantPositions=new ArrayList<Position>(state.getPeasantPositions());
           Integer[] peasantCargo=state.getPeasantCargo().toArray(new Integer[0]);
+          System.out.println("Peasant Cargo: "+Arrays.toString(peasantCargo));
           Position townHallPosition=state.getTownHallPosition();
           PriorityQueue<CandidateMove> candidateMoves=new PriorityQueue<CandidateMove>();
           for(int i=0;i<peasantIDs.length;i++) {
@@ -56,10 +58,10 @@ public class MoveTownHall extends Move implements StripsAction{
 
      @Override
      public GameState apply(GameState state) {
-          if(!preconditionsMet(state)) {
+          GameState newState=state.copyOf();
+          if(!preconditionsMet(newState)) {
                return null;
           }
-          GameState newState=state.copyOf();
           newState.setPeasantPositions(newPeasantPositions);
           newState.setParent(state);
           newState.setAction(this);

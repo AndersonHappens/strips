@@ -44,12 +44,12 @@ public class DepositWood implements StripsAction {
      
      @Override
      public GameState apply(GameState state) {
-          if(!preconditionsMet(state)) {
+          GameState newState=state.copyOf();
+          if(!preconditionsMet(newState)) {
                return null;
           }
-          GameState newState=state.copyOf();
-          Integer[] peasantIDs=state.getPeasantIds().toArray(new Integer[0]);
-          ArrayList<Integer> peasantCargo=state.getPeasantCargo();
+          Integer[] peasantIDs=newState.getPeasantIds().toArray(new Integer[0]);
+          ArrayList<Integer> peasantCargo=newState.getPeasantCargo();
           for(int i=0;i<peasantIDs.length;i++) {
                for(int j=0;j<peasantIdsInvolved.length;j++) {
                     if(peasantIDs[i].equals(peasantIdsInvolved.length)) {

@@ -157,7 +157,7 @@ public class GameState implements Comparable<GameState> {
          townHallId=original.townHallId;
          townHallPosition=original.townHallPosition;
          woodAmount=original.woodAmount;
-         goldAmount=original.woodAmount;
+         goldAmount=original.goldAmount;
          
          peasantIds=new ArrayList<Integer>(original.peasantIds);
          peasantPositions=new ArrayList<Position>(original.peasantPositions);
@@ -229,10 +229,12 @@ public class GameState implements Comparable<GameState> {
         if(buildPeasantState!=null) {
              children.add(buildPeasantState);
         }
+        if(action!=null && action instanceof MoveWood)
+             System.out.print("movewood ");
         System.out.print("Children: ");
         for(GameState child:children) {
              System.out.print(child.getAction()+", ");
-        }
+        } 
         System.out.println();
         return children;
     }
@@ -276,6 +278,7 @@ public class GameState implements Comparable<GameState> {
      * 
      * @return The value estimated remaining cost to reach a goal state from this state.
      */
+    //FIXME
     public double heuristic() {
     	int heur = 0;
     	if (isGoal()) {
@@ -542,6 +545,7 @@ public class GameState implements Comparable<GameState> {
 	}
 
 	public void setGoldAmount(int goldAmount) {
+	     System.out.println("Setting gold amount to: "+goldAmount);
 		this.goldAmount = goldAmount;
 	}
 

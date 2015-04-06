@@ -44,12 +44,12 @@ public class DepositGold implements StripsAction {
 
      @Override
      public GameState apply(GameState state) {
-          if(!preconditionsMet(state)) {
+          GameState newState=state.copyOf();
+          if(!preconditionsMet(newState)) {
                return null;
           }
-          GameState newState=state.copyOf();
-          Integer[] peasantIDs=state.getPeasantIds().toArray(new Integer[0]);
-          ArrayList<Integer> peasantCargo=state.getPeasantCargo();
+          Integer[] peasantIDs=newState.getPeasantIds().toArray(new Integer[0]);
+          ArrayList<Integer> peasantCargo=newState.getPeasantCargo();
           for(int i=0;i<peasantIDs.length;i++) {
                for(int j=0;j<peasantIdsInvolved.length;j++) {
                     if(peasantIDs[i].equals(peasantIdsInvolved.length)) {
@@ -58,6 +58,7 @@ public class DepositGold implements StripsAction {
                }
           }
           newState.setGoldAmount(newState.getGoldAmount()+peasantsInvolved*100);
+          System.out.println("Gold amounts: "+newState.getGoldAmount()+"  "+state.getGoldAmount());
           newState.setPeasantCargo(peasantCargo);
           newState.setParent(state);
           newState.setAction(this);
