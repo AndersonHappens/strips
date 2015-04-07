@@ -221,7 +221,7 @@ public class GameState implements Comparable<GameState> {
 	public List<GameState> generateChildren() {
 		ArrayList<GameState> children = new ArrayList<GameState>();
 		int i=peasantIds.size()-1;
-		//for (int i = peasantIds.size()-1; i < peasantIds.size(); i++) {
+		/*for (int i = peasantIds.size()-1; i < peasantIds.size(); i++) {
 			DepositWood depositWood = new DepositWood(i + 1);
 			GameState depositWoodState = depositWood.apply(this);
 			if (depositWoodState != null) {
@@ -258,7 +258,17 @@ public class GameState implements Comparable<GameState> {
 			if (moveTownHallState != null) {
 				children.add(moveTownHallState);
 			}
-		//}
+		}*/
+		CompoundGatherGold gatherGold=new CompoundGatherGold(i);
+		GameState gatherGoldState=gatherGold.apply(this);
+		if(gatherGoldState!=null) {
+		     children.add(gatherGoldState);
+		}
+		CompoundGatherWood gatherWood=new CompoundGatherWood(i);
+          GameState gatherWoodState=gatherWood.apply(this);
+          if(gatherWoodState!=null) {
+               children.add(gatherWoodState);
+          }
 		BuildPeasant buildPeasant = new BuildPeasant();
 		GameState buildPeasantState = buildPeasant.apply(this);
 		if (buildPeasantState != null) {
