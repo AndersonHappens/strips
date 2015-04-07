@@ -335,9 +335,17 @@ public class GameState implements Comparable<GameState> {
 		} else if(getGoalGoldAmount() - getGoldAmount() - getCarriedGold()<getGoalWoodAmount() - getWoodAmount() - getCarriedWood() && action instanceof MoveGold) {
 		     heur+=1000;
 		}
+		if(action instanceof MoveGold) {
+		     heur-=1000;
+		}
 		if(getGoldAmount()+getCarriedGold()>getGoalGoldAmount() || getGoalWoodAmount()<getWoodAmount()+getCarriedWood()) {
 		     heur=heur*10;
 		}
+		if(peasantIds.size()>1) {
+               heur-=(peasantIds.size()*1000);
+          }
+          
+		
 																				// shouldn't
 																				// go
 																				// negative
