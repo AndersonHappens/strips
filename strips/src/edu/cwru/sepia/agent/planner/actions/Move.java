@@ -59,5 +59,6 @@ public abstract class Move implements StripsAction {
           public int compareTo(CandidateMove o) {
                return this.distance-o.distance;
           }    
-     }
+     } 
+     public abstract int getDistanceMoved();
 }

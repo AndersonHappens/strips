@@ -13,6 +13,7 @@ public class MoveWood extends Move implements StripsAction{
      private ArrayList<Position> targetPositions;
      private ArrayList<Position> newPeasantPositions;
      private int peasantsInvolved;
+     private int distanceMoved;
      
      public MoveWood(int k) {
           peasantsInvolved=k;
@@ -35,7 +36,8 @@ public class MoveWood extends Move implements StripsAction{
                     for(int j=0;j<treePositions.length;j++) {
                          if(!peasantPositions[i].isAdjacent(treePositions[j]) && treeAmounts[j]>=100) {
                               for(Position p:treePositions[j].getAdjacentPositions()) {
-                                   candidateMoves.add(new CandidateMove(peasantIDs[i],i,p,p.chebyshevDistance(peasantPositions[i])));
+                            	  distanceMoved = p.chebyshevDistance(peasantPositions[i]);
+                                   candidateMoves.add(new CandidateMove(peasantIDs[i],i,p, distanceMoved));
                               }
                          }
                     }
@@ -85,5 +87,9 @@ public class MoveWood extends Move implements StripsAction{
 
      public ArrayList<Position> getTargetPositions() {
           return targetPositions;
+     }
+     
+     public int getDistanceMoved() {
+    	 return distanceMoved;
      }
 }

@@ -157,7 +157,7 @@ public class GameState implements Comparable<GameState> {
 		goalWoodAmount = original.goalWoodAmount;
 		goalGoldAmount = original.goalGoldAmount;
 		playerNum = original.playerNum;
-		cost = original.cost + 1;
+		cost = original.cost + costOfAction(original.action);
 		buildPeasantsAvailable = original.buildPeasantsAvailable;
 
 		xSize = original.xSize;
@@ -186,6 +186,14 @@ public class GameState implements Comparable<GameState> {
 
 		parent = original.parent;
 		action = original.action;
+	}
+	
+	private int costOfAction(StripsAction act) {
+		int cost = 1; // default cost of 1 for all 
+		if (act instanceof Move) {
+			cost = ((Move) act).getDistanceMoved();
+		}
+		return cost;
 	}
 
 	/**
@@ -316,7 +324,7 @@ public class GameState implements Comparable<GameState> {
 		if (isGoal()) {
 			return heur;
 		}
-		int numPeasants = peasantPositions.size();
+		//int numPeasants = peasantPositions.size();
 		/*
 		 * for(int i = 0; i<numPeasants; i++) { heur +=
 		 * getDistanceToClosestNeededResourceAndBack(peasantPositions.get(i)); }

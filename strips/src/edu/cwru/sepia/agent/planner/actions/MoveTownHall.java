@@ -7,6 +7,7 @@ import java.util.PriorityQueue;
 import edu.cwru.sepia.action.Action;
 import edu.cwru.sepia.agent.planner.GameState;
 import edu.cwru.sepia.agent.planner.Position;
+import edu.cwru.sepia.agent.planner.actions.Move.CandidateMove;
 
 public class MoveTownHall extends Move implements StripsAction{
 
@@ -14,6 +15,7 @@ public class MoveTownHall extends Move implements StripsAction{
      private ArrayList<Position> targetPositions;
      private ArrayList<Position> newPeasantPositions;
      private int peasantsInvolved;
+     private int distanceMoved;
      
      public MoveTownHall(int k) {
           peasantsInvolved=k;
@@ -34,7 +36,8 @@ public class MoveTownHall extends Move implements StripsAction{
                if(peasantCargo[i]!=GameState.NONE) {
                     if(!peasantPositions[i].isAdjacent(townHallPosition)) {
                          for(Position p:townHallPosition.getAdjacentPositions()) {
-                              candidateMoves.add(new CandidateMove(peasantIDs[i],i,p,p.chebyshevDistance(peasantPositions[i])));
+                        	 distanceMoved = p.chebyshevDistance(peasantPositions[i]);
+                             candidateMoves.add(new CandidateMove(peasantIDs[i],i,p, distanceMoved));
                          }
                     }
                }
@@ -83,5 +86,8 @@ public class MoveTownHall extends Move implements StripsAction{
 
      public ArrayList<Position> getTargetPositions() {
           return targetPositions;
+     }
+     public int getDistanceMoved() {
+    	 return distanceMoved;
      }
 }
