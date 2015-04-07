@@ -220,9 +220,9 @@ public class GameState implements Comparable<GameState> {
 	 */
 	public List<GameState> generateChildren() {
 		ArrayList<GameState> children = new ArrayList<GameState>();
-		int i=peasantIds.size()-1;
-		/*for (int i = peasantIds.size()-1; i < peasantIds.size(); i++) {
-			DepositWood depositWood = new DepositWood(i + 1);
+		//int i=peasantIds.size()-1;
+		for (int i = peasantIds.size()-1; i < peasantIds.size(); i++) {
+			/*DepositWood depositWood = new DepositWood(i + 1);
 			GameState depositWoodState = depositWood.apply(this);
 			if (depositWoodState != null) {
 				children.add(depositWoodState);
@@ -262,16 +262,17 @@ public class GameState implements Comparable<GameState> {
 				children.add(moveTownHallState);
 			}
 		}*/
-		CompoundGatherGold gatherGold=new CompoundGatherGold(i+1);
-		GameState gatherGoldState=gatherGold.apply(this);
-		if(gatherGoldState!=null) {
-		     children.add(gatherGoldState);
+			CompoundGatherGold gatherGold=new CompoundGatherGold(i+1);
+			GameState gatherGoldState=gatherGold.apply(this);
+			if(gatherGoldState!=null) {
+			     children.add(gatherGoldState);
+			}
+			CompoundGatherWood gatherWood=new CompoundGatherWood(i+1);
+	          GameState gatherWoodState=gatherWood.apply(this);
+	          if(gatherWoodState!=null) {
+	               children.add(gatherWoodState);
+	          }
 		}
-		CompoundGatherWood gatherWood=new CompoundGatherWood(i+1);
-          GameState gatherWoodState=gatherWood.apply(this);
-          if(gatherWoodState!=null) {
-               children.add(gatherWoodState);
-          }
 		BuildPeasant buildPeasant = new BuildPeasant();
 		GameState buildPeasantState = buildPeasant.apply(this);
 		if (buildPeasantState != null) {
@@ -339,7 +340,7 @@ public class GameState implements Comparable<GameState> {
 		 * for(int i = 0; i<numPeasants; i++) { heur +=
 		 * getDistanceToClosestNeededResourceAndBack(peasantPositions.get(i)); }
 		 */
-		heur += Math.abs(goalGoldAmount - goldAmount - getCarriedGold())*Math.abs(goalGoldAmount - goldAmount - getCarriedGold()) + Math.abs(getGoalWoodAmount() - getWoodAmount() - getCarriedWood());
+		heur += Math.abs(goalGoldAmount - goldAmount - getCarriedGold())*2 + Math.abs(getGoalWoodAmount() - getWoodAmount() - getCarriedWood());
 		/*if(getGoalGoldAmount() - getGoldAmount() - getCarriedGold()>getGoalWoodAmount() - getWoodAmount() - getCarriedWood() && action instanceof MoveWood) {
 		     heur+=1000;
 		} else if(getGoalGoldAmount() - getGoldAmount() - getCarriedGold()<getGoalWoodAmount() - getWoodAmount() - getCarriedWood() && action instanceof MoveGold) {
@@ -361,8 +362,7 @@ public class GameState implements Comparable<GameState> {
 																				// negative
 		//System.out.println("heuristic: " + heur);
 		return heur/(numPeasants*numPeasants); // Weighted towards more
-													// peasants... still
-													// necessary?
+													// peasants
 	}
 
 	/**
