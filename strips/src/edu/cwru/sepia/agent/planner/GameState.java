@@ -212,7 +212,8 @@ public class GameState implements Comparable<GameState> {
 	 */
 	public List<GameState> generateChildren() {
 		ArrayList<GameState> children = new ArrayList<GameState>();
-		for (int i = 0; i < peasantIds.size(); i++) {
+		int i=peasantIds.size()-1;
+		//for (int i = peasantIds.size()-1; i < peasantIds.size(); i++) {
 			DepositWood depositWood = new DepositWood(i + 1);
 			GameState depositWoodState = depositWood.apply(this);
 			if (depositWoodState != null) {
@@ -249,7 +250,7 @@ public class GameState implements Comparable<GameState> {
 			if (moveTownHallState != null) {
 				children.add(moveTownHallState);
 			}
-		}
+		//}
 		BuildPeasant buildPeasant = new BuildPeasant();
 		GameState buildPeasantState = buildPeasant.apply(this);
 		if (buildPeasantState != null) {
@@ -257,11 +258,11 @@ public class GameState implements Comparable<GameState> {
 		}
 		//if (action != null && action instanceof MoveWood)
 			//System.out.print("movewood ");
-		//System.out.print("Children: ");
+		System.out.print("Children: ");
 		for (GameState child : children) {
-			// System.out.print(child.getAction()+", ");
+			 System.out.print(child.getAction()+", ");
 		}
-		// System.out.println();
+		 System.out.println();
 		return children;
 	}
 
@@ -320,10 +321,15 @@ public class GameState implements Comparable<GameState> {
 		 * for(int i = 0; i<numPeasants; i++) { heur +=
 		 * getDistanceToClosestNeededResourceAndBack(peasantPositions.get(i)); }
 		 */
-		heur += (getGoalGoldAmount() - getGoldAmount() - getCarriedGold())
-				* (getGoalGoldAmount() - getGoldAmount() - getCarriedGold())
-				+ (getGoalWoodAmount() - getWoodAmount() - getCarriedWood())
-				* (getGoalWoodAmount() - getWoodAmount() - getCarriedWood()); // heuristic
+		heur += Math.abs(getGoalGoldAmount() - getGoldAmount() - getCarriedGold()) + Math.abs(getGoalWoodAmount() - getWoodAmount() - getCarriedWood());
+		if(getGoalGoldAmount() - getGoldAmount() - getCarriedGold()>getGoalWoodAmount() - getWoodAmount() - getCarriedWood() && action instanceof MoveWood) {
+		     heur+=1000;
+		} else if(getGoalGoldAmount() - getGoldAmount() - getCarriedGold()<getGoalWoodAmount() - getWoodAmount() - getCarriedWood() && action instanceof MoveGold) {
+		     heur+=1000;
+		}
+		if(getGoldAmount()+getCarriedGold()>getGoalGoldAmount() || getGoalWoodAmount()<getWoodAmount()+getCarriedWood()) {
+		     heur=heur*10;
+		}
 																				// shouldn't
 																				// go
 																				// negative

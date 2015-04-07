@@ -27,13 +27,14 @@ public class MoveWood extends Move implements StripsAction{
           newPeasantPositions=new ArrayList<Position>(state.getPeasantPositions());
           Integer[] peasantCargo=state.getPeasantCargo().toArray(new Integer[0]);
           Position[] treePositions=state.getWoodPositions();
+          int[] treeAmounts=state.getWoodAmounts();
           PriorityQueue<CandidateMove> candidateMoves=new PriorityQueue<CandidateMove>();
 
           for(int i=0;i<peasantIDs.length;i++) {
                if(peasantCargo[i]==GameState.NONE) {
                     for(int j=0;j<treePositions.length;j++) {
-                         if(!peasantPositions[i].isAdjacent(treePositions[j])) {
-                              for(Position p:treePositions[i].getAdjacentPositions()) {
+                         if(!peasantPositions[i].isAdjacent(treePositions[j]) && treeAmounts[j]>=100) {
+                              for(Position p:treePositions[j].getAdjacentPositions()) {
                                    candidateMoves.add(new CandidateMove(peasantIDs[i],i,p,p.chebyshevDistance(peasantPositions[i])));
                               }
                          }
