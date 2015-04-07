@@ -159,9 +159,7 @@ public class PlannerAgent extends Agent {
     	  // return an empty path if no goal is found
     		return new Stack<StripsAction>();
     	}
-    	     //System.out.println("finished astar");
-    	System.out.println(state.getAction());
-        return calculateStack(state);
+    	     return calculateStack(state);
     }
     
     /**
@@ -174,11 +172,9 @@ public class PlannerAgent extends Agent {
     	GameState currentNode = end;
     	//while the parent exists, add the node to the endList
     	while(currentNode.getParent()!=null && currentNode.getAction() != null) {
-    		endList.push(currentNode.getAction());
+    	     endList.push(currentNode.getAction());
     		currentNode = currentNode.getParent();
     	}
-    	//remove the start node from the stack 
-    	endList.pop();
     	return endList;
     }
 

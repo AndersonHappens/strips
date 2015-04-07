@@ -29,7 +29,7 @@ public class MoveTownHall extends Move implements StripsAction{
           Position[] peasantPositions=state.getPeasantPositions().toArray(new Position[0]);
           newPeasantPositions=new ArrayList<Position>(state.getPeasantPositions());
           Integer[] peasantCargo=state.getPeasantCargo().toArray(new Integer[0]);
-          System.out.println("Peasant Cargo: "+Arrays.toString(peasantCargo));
+          //System.out.println("Peasant Cargo: "+Arrays.toString(peasantCargo));
           Position townHallPosition=state.getTownHallPosition();
           PriorityQueue<CandidateMove> candidateMoves=new PriorityQueue<CandidateMove>();
           for(int i=0;i<peasantIDs.length;i++) {

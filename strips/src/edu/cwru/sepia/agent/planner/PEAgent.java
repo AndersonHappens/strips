@@ -116,6 +116,7 @@ public class PEAgent extends Agent {
          }
 	    if(!plan.isEmpty()) {
      	    StripsAction act=plan.pop();
+     	    System.out.println("action is: "+act);
      	    ArrayList<Action> actions=createSepiaAction(act);
      	    for(Action action:actions) {
      	         map.put(action.getUnitId(), action);
