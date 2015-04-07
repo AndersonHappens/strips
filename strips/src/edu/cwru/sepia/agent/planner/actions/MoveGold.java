@@ -25,10 +25,9 @@ public class MoveGold extends Move implements StripsAction{
      
      @Override
      public boolean preconditionsMet(GameState state) {
-          //System.out.println("called movegold preconditions met");
-         	 if(state.getGoldAmount() >= state.getGoalGoldAmount() + 400) {
+          if(state.getGoldAmount() >= state.getGoalGoldAmount() + 400) {
          		 return false;
-         	 }
+         	}
           Integer[] peasantIDs=state.getPeasantIds().toArray(new Integer[0]);
           Position[] peasantPositions=state.getPeasantPositions().toArray(new Position[0]);
           newPeasantPositions=new ArrayList<Position>(state.getPeasantPositions());

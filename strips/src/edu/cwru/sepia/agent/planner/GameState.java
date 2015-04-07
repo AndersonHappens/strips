@@ -220,7 +220,7 @@ public class GameState implements Comparable<GameState> {
 	 */
 	public List<GameState> generateChildren() {
 		ArrayList<GameState> children = new ArrayList<GameState>();
-		int i=peasantIds.size()-1;
+		//int i=peasantIds.size()-1;
 		//for (int i = peasantIds.size()-1; i < peasantIds.size(); i++) {
 			/*DepositWood depositWood = new DepositWood(i + 1);
 			GameState depositWoodState = depositWood.apply(this);
@@ -267,16 +267,19 @@ public class GameState implements Comparable<GameState> {
           if (buildPeasantState != null) {
                children.add(buildPeasantState);
           }
-		CompoundGatherGold gatherGold=new CompoundGatherGold(i+1);
-		GameState gatherGoldState=gatherGold.apply(this);
-		if(gatherGoldState!=null) {
-		     children.add(gatherGoldState);
-		}
-		CompoundGatherWood gatherWood=new CompoundGatherWood(i+1);
-          GameState gatherWoodState=gatherWood.apply(this);
-          if(gatherWoodState!=null) {
-               children.add(gatherWoodState);
-          }
+          int i=peasantIds.size()-1;
+          //for(int i=0;i<peasantIds.size();i++) {
+               CompoundGatherGold gatherGold=new CompoundGatherGold(i+1);
+     		GameState gatherGoldState=gatherGold.apply(this);
+     		if(gatherGoldState!=null) {
+     		     children.add(gatherGoldState);
+     		}
+     		CompoundGatherWood gatherWood=new CompoundGatherWood(i+1);
+               GameState gatherWoodState=gatherWood.apply(this);
+               if(gatherWoodState!=null) {
+                    children.add(gatherWoodState);
+               }
+          //}
 		return children;
 	}
 
@@ -323,13 +326,16 @@ public class GameState implements Comparable<GameState> {
 	 */
 	// FIXME
 	public double heuristic() {
-		int heur = 0;
+		double heur = 0;
 		if (isGoal()) {
 			return heur;
 		}
 		int numPeasants = peasantPositions.size();
 		heur += Math.abs(goalGoldAmount - goldAmount - getCarriedGold())*2 + Math.abs(getGoalWoodAmount() - getWoodAmount() - getCarriedWood());
-		return heur/(numPeasants*numPeasants); 
+		if(numPeasants>1) {
+		     return 0;
+		}
+		return heur/(numPeasants*numPeasants*numPeasants*numPeasants); 
 	}
 
 	/**

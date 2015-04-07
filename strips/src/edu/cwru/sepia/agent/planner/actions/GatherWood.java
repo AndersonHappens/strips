@@ -60,7 +60,7 @@ public class GatherWood implements StripsAction {
           ArrayList<Integer> peasantCargo=new ArrayList<Integer>(newState.getPeasantCargo());
           for(int i=0;i<peasantIDs.length;i++) {
                for(int j=0;j<peasantIdsInvolved.length;j++) {
-                    if(peasantIDs[i].equals(peasantIdsInvolved.length)) {
+                    if(peasantIDs[i].equals(peasantIdsInvolved[j])) {
                          peasantCargo.set(i, GameState.WOOD);
                     }
                }

@@ -110,7 +110,7 @@ public class PlannerAgent extends Agent {
     	while(!openset.isEmpty()) {
     	    state = openset.remove();
     	    //if we have found the goal, stop the search
-    	    System.out.println(state.getAction()+"  "+state.getCost()+"  "+state.heuristic()+"  "+(state.getCost()+state.heuristic()));
+    	    //System.out.println(state.getAction()+"  "+state.getCost()+"  "+state.heuristic()+"  "+(state.getCost()+state.heuristic()));
          	 if (state.isGoal()) {
                 System.out.println("Goal found");
                 goal=state;
