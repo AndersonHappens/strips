@@ -33,8 +33,7 @@ public class GatherWood implements StripsAction {
           int peasantsAvailable=0;
           for(int i=0;i<peasantPositions.length && peasantsInvolved>peasantsAvailable;i++) {
                for(int j=0;j<treePositions.length;j++) {
-                   // System.out.println(peasantPositions[i]+"  "+treePositions[j]+"  "+newWoodAmounts[j]);
-                    if(peasantPositions[i].isAdjacent(treePositions[j]) && peasantCargo[i].intValue()==GameState.NONE && newWoodAmounts[j]>=100) {
+                   if(peasantPositions[i].isAdjacent(treePositions[j]) && peasantCargo[i].intValue()==GameState.NONE && newWoodAmounts[j]>=100) {
                          peasantIdsInvolved[peasantsAvailable]=peasantIDs[i];
                          peasantPositionsInvolved[peasantsAvailable]=peasantPositions[i];
                          treePositionsInvolved[peasantsAvailable]=treePositions[j];

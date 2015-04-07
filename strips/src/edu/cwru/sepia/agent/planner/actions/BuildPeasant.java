@@ -11,20 +11,20 @@ public class BuildPeasant implements StripsAction {
 
      @Override
      public boolean preconditionsMet(GameState state) {
-          return false;//state.isBuildPeasantsAvailable() && state.getPeasantIds().size()<3 && state.getGoldAmount()>=400;
+          return state.isBuildPeasantsAvailable() && state.getPeasantIds().size()<3 && state.getGoldAmount()>=400;
      }
 
      @Override
      public GameState apply(GameState state) {
-          if(!preconditionsMet(state)) {
+          GameState newState=state.copyOf();
+          if(!preconditionsMet(newState)) {
                return null;
           }
-          GameState newState=state.copyOf();
           newPeasantId=newState.getPeasantIds().size()+1;
           newState.getPeasantIds().add(newPeasantId);
           newState.getPeasantCargo().add(GameState.NONE);
           //the new peasants location is slightly off, this will be fixed after it's first move
-          newState.getPeasantPositions().add(state.getTownHallPosition());
+          newState.getPeasantPositions().add(newState.getTownHallPosition());
           newState.setGoldAmount(newState.getGoldAmount()-400);
           newState.setParent(state);
           newState.setAction(this);

@@ -2,6 +2,7 @@ package edu.cwru.sepia.agent.planner;
 
 import edu.cwru.sepia.action.Action;
 import edu.cwru.sepia.agent.Agent;
+import edu.cwru.sepia.agent.planner.actions.BuildPeasant;
 import edu.cwru.sepia.agent.planner.actions.StripsAction;
 import edu.cwru.sepia.environment.model.history.History;
 import edu.cwru.sepia.environment.model.state.State;
@@ -104,27 +105,21 @@ public class PlannerAgent extends Agent {
     	// add initial start location
     	openset.add(startState);
     	GameState state = null;
+    	GameState goal=null;
     	//while the openset has children to go through and the goal hasnt been found yet
     	while(!openset.isEmpty()) {
-    	    // System.out.println("in astar");
-    	     state = openset.remove();
-    	     if(goalFound) {
-    	          break;
-    	     }
-    	     //System.out.println(state.heuristic());
-    	    // System.out.println(state.getPeasantPositions().toString());
-    	    // System.out.println(state.getGoldAmount() + " " + state.getWoodAmount());
-    	     //printIntArray(state.getWoodAmounts());
-    	     //get all valid children
+    	    state = openset.remove();
+    	    System.out.println(state.getAction()+"  "+state.getCost()+"  "+state.heuristic()+"  "+(state.getCost()+state.heuristic()));
+         	 if (state.isGoal()) {
+                System.out.println("Goal found");
+                goal=state;
+                goalFound = true;
+                break;
+           } 
+    	    //get all valid children
     		for(GameState child: state.generateChildren()) {
     			//if we have found the goal, stop the search
-    			if (child.isGoal()) {
-    			     System.out.println("Goal found");
-    			    // System.out.println(child.getGoldAmount()+"  "+child.getWoodAmount());
-    			     openset.offer(child);
-    				goalFound = true;
-    				break;
-    			} else if(openset.contains(child)) {
+    		     if(openset.contains(child)) {
     				//iterate through the openset until we found the child node we are looking for
     			     Iterator<GameState> iterator=openset.iterator();
     			     GameState temp=null;
@@ -141,11 +136,9 @@ public class PlannerAgent extends Agent {
                     }
     			} else if(closedList.containsKey(child)) {
     				//don't add it to the openset if it is already contained in the closedList
-    				//System.out.println("Hash duplicated is: " + child.hashCode() + " gold is " + child.getGoldAmount() +" wood is " +child.getWoodAmount() + " Position is: " + child.getPeasantPositions().get(0).toString()+" estimated cost is: "+(child.getCost()+child.heuristic()));
-    			     continue;
+    				continue;
     			} else {
     				openset.add(child);
-    				System.out.println(" gold is " + child.getGoldAmount() +" wood is " +child.getWoodAmount() + " Position is: " + child.getPeasantPositions().get(0).toString()+" estimated cost is: "+(child.heuristic()));
     			}
     		}
     		//add the state to the closed list after going through all of it's children
@@ -159,7 +152,7 @@ public class PlannerAgent extends Agent {
     	  // return an empty path if no goal is found
     		return new Stack<StripsAction>();
     	}
-    	     return calculateStack(state);
+    	     return calculateStack(goal);
     }
     
     /**

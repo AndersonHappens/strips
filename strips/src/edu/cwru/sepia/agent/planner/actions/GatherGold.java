@@ -33,8 +33,7 @@ public class GatherGold implements StripsAction {
           int peasantsAvailable=0;
           for(int i=0;i<peasantPositions.length && peasantsInvolved>peasantsAvailable;i++) {
                for(int j=0;j<minePositions.length;j++) {
-                   // System.out.println(peasantPositions[i]+"  "+minePositions[j]+"  "+newGoldAmounts[j]);
-                    if(peasantPositions[i].isAdjacent(minePositions[j]) && peasantCargo[i].intValue()==GameState.NONE && newGoldAmounts[j]>=100) {
+                   if(peasantPositions[i].isAdjacent(minePositions[j]) && peasantCargo[i].intValue()==GameState.NONE && newGoldAmounts[j]>=100) {
                          peasantIdsInvolved[peasantsAvailable]=peasantIDs[i];
                          peasantPositionsInvolved[peasantsAvailable]=peasantPositions[i];
                          minePositionsInvolved[peasantsAvailable]=minePositions[j];

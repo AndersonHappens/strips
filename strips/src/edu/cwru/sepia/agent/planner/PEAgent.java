@@ -106,9 +106,7 @@ public class PEAgent extends Agent {
          }
          Map<Integer, Action> map = new HashMap<Integer, Action>();
          int currentTurn = stateView.getTurnNumber();
-         //System.out.println(plan);
-	   // System.out.println(historyView.getCommandFeedback(playernum, currentTurn-1).values());
-	    for(ActionResult feedback : historyView.getCommandFeedback(playernum, currentTurn-1).values())
+         for(ActionResult feedback : historyView.getCommandFeedback(playernum, currentTurn-1).values())
          {
                if(feedback.getFeedback() == ActionFeedback.INCOMPLETE) {
                     return map;
@@ -116,12 +114,12 @@ public class PEAgent extends Agent {
          }
 	    if(!plan.isEmpty()) {
      	    StripsAction act=plan.pop();
-     	    System.out.println("action is: "+act);
      	    ArrayList<Action> actions=createSepiaAction(act);
      	    for(Action action:actions) {
      	         map.put(action.getUnitId(), action);
-     	        // System.out.println(action.getUnitId()+"  "+action);
      	    }
+	    } else {
+	         System.err.println("the plan is empty!!!");
 	    }
          return map;
     }
@@ -208,7 +206,7 @@ public class PEAgent extends Agent {
              BuildPeasant act=(BuildPeasant) action;
              newPeasantId=act.getNewPeasantId();
              actions.add(Action.createPrimitiveProduction(townhallId, peasantTemplateId));
-             newPeasantCreated=true;      
+             newPeasantCreated=true;
         } else {
              try {
                   throw new Exception("Error: Unexpected StripsAction");
