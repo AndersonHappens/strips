@@ -105,12 +105,10 @@ public class PlannerAgent extends Agent {
     	openset.add(startState);
     	GameState state = null;
     	//while the openset has children to go through and the goal hasnt been found yet
-    	while(!openset.isEmpty()) {
+    	while(!openset.isEmpty() && !goalFound) {
     	    // System.out.println("in astar");
     	     state = openset.remove();
-    	     if(goalFound) {
-    	          break;
-    	     }
+
     	     //System.out.println(state.heuristic());
     	    // System.out.println(state.getPeasantPositions().toString());
     	    // System.out.println(state.getGoldAmount() + " " + state.getWoodAmount());
@@ -121,7 +119,8 @@ public class PlannerAgent extends Agent {
     			if (child.isGoal()) {
     			     System.out.println("Goal found");
     			    // System.out.println(child.getGoldAmount()+"  "+child.getWoodAmount());
-    			     openset.offer(child);
+    			     //openset.offer(child);
+    			     state = child;
     				goalFound = true;
     				break;
     			} else if(openset.contains(child)) {

@@ -11,7 +11,7 @@ public class BuildPeasant implements StripsAction {
 
      @Override
      public boolean preconditionsMet(GameState state) {
-          return false;//state.isBuildPeasantsAvailable() && state.getPeasantIds().size()<3 && state.getGoldAmount()>=400;
+          return state.isBuildPeasantsAvailable() && state.getPeasantIds().size()<3 && state.getGoldAmount()>=400;
      }
 
      @Override

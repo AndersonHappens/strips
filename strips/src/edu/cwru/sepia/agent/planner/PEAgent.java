@@ -99,7 +99,7 @@ public class PEAgent extends Agent {
      */
     @Override
     public Map<Integer, Action> middleStep(State.StateView stateView, History.HistoryView historyView) {
-         System.out.println("in the middle step");
+        // System.out.println("in the middle step");
          if(newPeasantCreated) {
               peasantIdMap.put(newPeasantId, stateView.getAllUnitIds().get(stateView.getAllUnitIds().size()-1));
               newPeasantCreated=false;
@@ -122,6 +122,8 @@ public class PEAgent extends Agent {
      	         map.put(action.getUnitId(), action);
      	        // System.out.println(action.getUnitId()+"  "+action);
      	    }
+	    } else{
+	    	System.out.println("plan was empty...");
 	    }
          return map;
     }
