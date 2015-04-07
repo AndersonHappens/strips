@@ -105,9 +105,12 @@ public class PlannerAgent extends Agent {
     	openset.add(startState);
     	GameState state = null;
     	//while the openset has children to go through and the goal hasnt been found yet
-    	while(!openset.isEmpty() && !goalFound) {
+    	while(!openset.isEmpty()) {
     	    // System.out.println("in astar");
     	     state = openset.remove();
+    	     if(goalFound) {
+    	          break;
+    	     }
     	     //System.out.println(state.heuristic());
     	    // System.out.println(state.getPeasantPositions().toString());
     	    // System.out.println(state.getGoldAmount() + " " + state.getWoodAmount());
@@ -118,6 +121,7 @@ public class PlannerAgent extends Agent {
     			if (child.isGoal()) {
     			     System.out.println("Goal found");
     			    // System.out.println(child.getGoldAmount()+"  "+child.getWoodAmount());
+    			     openset.offer(child);
     				goalFound = true;
     				break;
     			} else if(openset.contains(child)) {
@@ -137,11 +141,11 @@ public class PlannerAgent extends Agent {
                     }
     			} else if(closedList.containsKey(child)) {
     				//don't add it to the openset if it is already contained in the closedList
-    				System.out.println("Hash duplicated is: " + child.hashCode() + " gold is " + child.getGoldAmount() +" wood is " +child.getWoodAmount() + " Position is: " + child.getPeasantPositions().get(0).toString());
+    				System.out.println("Hash duplicated is: " + child.hashCode() + " gold is " + child.getGoldAmount() +" wood is " +child.getWoodAmount() + " Position is: " + child.getPeasantPositions().get(0).toString()+" estimated cost is: "+(child.getCost()+child.heuristic()));
     			     continue;
     			} else {
     				openset.add(child);
-    				System.out.println("Hash is: " + child.hashCode() + " gold is " + child.getGoldAmount() +" wood is " +child.getWoodAmount() + " Position is: " + child.getPeasantPositions().get(0).toString());
+    				System.out.println("Hash is: " + child.hashCode() + " gold is " + child.getGoldAmount() +" wood is " +child.getWoodAmount() + " Position is: " + child.getPeasantPositions().get(0).toString()+" estimated cost is: "+(child.getCost()+child.heuristic()));
     			}
     		}
     		//add the state to the closed list after going through all of it's children
@@ -156,6 +160,7 @@ public class PlannerAgent extends Agent {
     		return new Stack<StripsAction>();
     	}
     	     //System.out.println("finished astar");
+    	System.out.println(state.getAction());
         return calculateStack(state);
     }
     

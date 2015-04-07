@@ -1,6 +1,7 @@
 package edu.cwru.sepia.agent.planner.actions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.PriorityQueue;
 
 import edu.cwru.sepia.action.Action;
@@ -22,25 +23,29 @@ public class MoveGold extends Move implements StripsAction{
      
      @Override
      public boolean preconditionsMet(GameState state) {
-          System.out.println("called movegold preconditions met");
+          //System.out.println("called movegold preconditions met");
           Integer[] peasantIDs=state.getPeasantIds().toArray(new Integer[0]);
           Position[] peasantPositions=state.getPeasantPositions().toArray(new Position[0]);
           newPeasantPositions=new ArrayList<Position>(state.getPeasantPositions());
           Integer[] peasantCargo=state.getPeasantCargo().toArray(new Integer[0]);
           Position[] minePositions=state.getGoldPositions();
+          int[] mineAmounts=state.getGoldAmounts();
           PriorityQueue<CandidateMove> candidateMoves=new PriorityQueue<CandidateMove>();
           for(int i=0;i<peasantIDs.length;i++) {
                if(peasantCargo[i]==GameState.NONE) {
                     for(int j=0;j<minePositions.length;j++) {
-                         if(!peasantPositions[i].isAdjacent(minePositions[j])) {
-                              for(Position p:minePositions[i].getAdjacentPositions()) {
+                         if(!peasantPositions[i].isAdjacent(minePositions[j]) && mineAmounts[j]>=100) {
+                              for(Position p:minePositions[j].getAdjacentPositions()) {
                                    candidateMoves.add(new CandidateMove(peasantIDs[i],i,p,p.chebyshevDistance(peasantPositions[i])));
                               }
                          }
                     }
                }
           }
-          System.out.println(candidateMoves);
+          /*if(state.getGoldAmount()>=100) {
+               System.out.println(candidateMoves);
+               System.out.println(Arrays.toString(mineAmounts));
+          }*/
           peasantIdsInvolved=new ArrayList<Integer>();
           targetPositions=new ArrayList<Position>();
           while(peasantIdsInvolved.size()<peasantsInvolved && !candidateMoves.isEmpty()) {
@@ -50,7 +55,7 @@ public class MoveGold extends Move implements StripsAction{
                     targetPositions.add(current.targetLocation);
                     newPeasantPositions.set(current.unitIndex, current.targetLocation);
                }
-               System.out.println("PeasantIds for move gold: "+peasantIdsInvolved);
+               //System.out.println("PeasantIds for move gold: "+peasantIdsInvolved);
           }
           if(peasantIdsInvolved.size()>=peasantsInvolved) {
                return true;

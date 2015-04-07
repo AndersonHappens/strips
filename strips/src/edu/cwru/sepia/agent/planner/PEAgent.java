@@ -100,6 +100,10 @@ public class PEAgent extends Agent {
     @Override
     public Map<Integer, Action> middleStep(State.StateView stateView, History.HistoryView historyView) {
          System.out.println("in the middle step");
+         if(newPeasantCreated) {
+              peasantIdMap.put(newPeasantId, stateView.getAllUnitIds().get(stateView.getAllUnitIds().size()-1));
+              newPeasantCreated=false;
+         }
          Map<Integer, Action> map = new HashMap<Integer, Action>();
          int currentTurn = stateView.getTurnNumber();
          //System.out.println(plan);
@@ -110,11 +114,13 @@ public class PEAgent extends Agent {
                     return map;
                }
          }
-	    StripsAction act=plan.pop();
-	    ArrayList<Action> actions=createSepiaAction(act);
-	    for(Action action:actions) {
-	         map.put(action.getUnitId(), action);
-	        // System.out.println(action.getUnitId()+"  "+action);
+	    if(!plan.isEmpty()) {
+     	    StripsAction act=plan.pop();
+     	    ArrayList<Action> actions=createSepiaAction(act);
+     	    for(Action action:actions) {
+     	         map.put(action.getUnitId(), action);
+     	        // System.out.println(action.getUnitId()+"  "+action);
+     	    }
 	    }
          return map;
     }
@@ -197,10 +203,7 @@ public class PEAgent extends Agent {
 
     @Override
     public void terminalStep(State.StateView stateView, History.HistoryView historyView) {
-         if(newPeasantCreated) {
-              peasantIdMap.put(newPeasantId, stateView.getAllUnitIds().get(stateView.getAllUnitIds().size()-1));
-              newPeasantCreated=false;
-         }
+         
     }
 
     @Override
