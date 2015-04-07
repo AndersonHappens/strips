@@ -60,6 +60,7 @@ public class MoveGold extends Move implements StripsAction{
                }
                //System.out.println("PeasantIds for move gold: "+peasantIdsInvolved);
           }
+          System.out.println("the new peasant positions "+newPeasantPositions);
           if(peasantIdsInvolved.size()>=peasantsInvolved) {
                return true;
           } else {
@@ -74,6 +75,8 @@ public class MoveGold extends Move implements StripsAction{
                return null;
           }
           newState.setPeasantPositions(newPeasantPositions);
+          System.out.println("the new peasant positions that are applied "+newPeasantPositions);
+          System.out.println("the new peasant positions that were applied "+newState.getPeasantPositions());
           newState.setParent(state);
           newState.setAction(this);
           return newState;

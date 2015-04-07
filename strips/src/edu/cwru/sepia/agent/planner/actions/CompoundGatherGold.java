@@ -24,13 +24,14 @@ public class CompoundGatherGold implements StripsAction {
      public GameState apply(GameState state) {
           //Note that each action checks it's preconditions during apply(...), returns null if preconditions are not met.
           GameState newState=state.copyOf();
-          System.out.println(newState+"  "+state);
+          System.out.println("this is that line: "+newState+"  "+state);
+          System.out.println(""+(newState == state));
           MoveGold moveGold=new MoveGold(peasantsInvolved);
           GameState moveGoldState=moveGold.apply(newState);
           if(moveGoldState==null) {
                return null;
           }
-          System.out.println(moveGoldState.getPeasantPositions());
+          System.out.println("move gold "+moveGoldState.getPeasantPositions());
           System.out.println(moveGoldState.getParent()+"  "+state);
           System.out.println(moveGoldState.getAction());
           GatherGold gatherGold=new GatherGold(peasantsInvolved);

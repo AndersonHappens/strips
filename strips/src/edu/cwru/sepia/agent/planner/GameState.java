@@ -247,12 +247,15 @@ public class GameState implements Comparable<GameState> {
 			if (moveWoodState != null) {
 				children.add(moveWoodState);
 			}
+			
 			MoveGold moveGold = new MoveGold(i + 1);
 			GameState moveGoldState = moveGold.apply(this);
 			// System.out.println(moveGold.apply(this));
 			if (moveGoldState != null) {
 				children.add(moveGoldState);
 			}
+			System.out.println("move gold alone "+moveGoldState.getPeasantPositions());
+               
 			MoveTownHall moveTownHall = new MoveTownHall(i + 1);
 			GameState moveTownHallState = moveTownHall.apply(this);
 			if (moveTownHallState != null) {
