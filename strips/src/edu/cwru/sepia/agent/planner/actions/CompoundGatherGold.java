@@ -9,6 +9,8 @@ import edu.cwru.sepia.agent.planner.GameState;
 public class CompoundGatherGold implements StripsAction {
 
      int peasantsInvolved;
+     private Integer[] peasantIdsInvolved;
+     private ArrayList<Action> actions = new ArrayList<Action>();
      
      public CompoundGatherGold(int k){
           peasantsInvolved=k;
@@ -26,6 +28,7 @@ public class CompoundGatherGold implements StripsAction {
           GameState newState=state.copyOf();
           System.out.println(newState+"  "+state);
           MoveGold moveGold=new MoveGold(peasantsInvolved);
+          peasantIdsInvolved = moveGold.getPeasantIdsInvolved();
           GameState moveGoldState=moveGold.apply(newState);
           if(moveGoldState==null) {
                return null;
@@ -62,14 +65,12 @@ public class CompoundGatherGold implements StripsAction {
 
      @Override
      public ArrayList<Action> toSepiaAction() {
-          // TODO Auto-generated method stub
-          return null;
+          return actions;
      }
 
      @Override
      public Integer[] getPeasantIdsInvolved() {
-          // TODO Auto-generated method stub
-          return null;
+          return peasantIdsInvolved;
      }
 
 }

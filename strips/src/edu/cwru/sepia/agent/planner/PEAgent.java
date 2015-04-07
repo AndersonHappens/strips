@@ -132,6 +132,24 @@ public class PEAgent extends Agent {
      */
     private ArrayList<Action> createSepiaAction(StripsAction action) {
         ArrayList<Action> actions=new ArrayList<Action>();
+       /* if(action instanceof CompoundGatherGold) {
+        	CompoundGatherGold act=(CompoundGatherGold) action;
+            Integer[] peasantIdsInvolved = act.getPeasantIdsInvolved();
+            Position[] peasantPositionsInvolved=act.getPeasantPositionsInvolved();
+            Position[] treePositionsInvolved=act.getTreePositionsInvolved();
+            for(int i=0;i<peasantIdsInvolved.length;i++) {
+                actions.add(Action.createCompoundMove(peasantIdMap.get(peasantIdsInvolved[i]),targetPositions.get(i).x,targetPositions.get(i).y));
+           }
+            for(int i=0;i<peasantIdsInvolved.length;i++) {
+                actions.add(Action.createPrimitiveGather(peasantIdMap.get(peasantIdsInvolved[i]), peasantPositionsInvolved[i].getDirection(treePositionsInvolved[i])));   
+           }            
+            for(int i=0;i<peasantIdsInvolved.length;i++) {
+                actions.add(Action.createCompoundMove(peasantIdMap.get(peasantIdsInvolved[i]),targetPositions.get(i).x,targetPositions.get(i).y));
+           }
+            for(int i=0;i<peasantIdsInvolved.length;i++) {
+                actions.add(Action.createPrimitiveDeposit(peasantIdMap.get(peasantIdsInvolved[i]), peasantPositionsInvolved[i].getDirection(townHallPosition)));   
+           }
+        }*/
         if(action instanceof GatherWood) {
              GatherWood act=(GatherWood) action;
              Integer[] peasantIdsInvolved = act.getPeasantIdsInvolved();

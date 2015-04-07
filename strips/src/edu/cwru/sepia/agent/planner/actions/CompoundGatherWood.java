@@ -8,7 +8,8 @@ import edu.cwru.sepia.agent.planner.GameState;
 public class CompoundGatherWood implements StripsAction {
 
      int peasantsInvolved;
-     
+     private Integer[] peasantIdsInvolved;
+     private ArrayList<Action> actions = new ArrayList<Action>();
      public CompoundGatherWood(int k){
           peasantsInvolved=k;
      }
@@ -47,14 +48,12 @@ public class CompoundGatherWood implements StripsAction {
 
      @Override
      public ArrayList<Action> toSepiaAction() {
-          // TODO Auto-generated method stub
-          return null;
+          return actions;
      }
 
      @Override
      public Integer[] getPeasantIdsInvolved() {
-          // TODO Auto-generated method stub
-          return null;
+    	 return peasantIdsInvolved;
      }
 
 }
