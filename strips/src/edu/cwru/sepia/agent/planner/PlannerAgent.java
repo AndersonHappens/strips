@@ -141,11 +141,11 @@ public class PlannerAgent extends Agent {
                     }
     			} else if(closedList.containsKey(child)) {
     				//don't add it to the openset if it is already contained in the closedList
-    				System.out.println("Hash duplicated is: " + child.hashCode() + " gold is " + child.getGoldAmount() +" wood is " +child.getWoodAmount() + " Position is: " + child.getPeasantPositions().get(0).toString()+" estimated cost is: "+(child.getCost()+child.heuristic()));
+    				//System.out.println("Hash duplicated is: " + child.hashCode() + " gold is " + child.getGoldAmount() +" wood is " +child.getWoodAmount() + " Position is: " + child.getPeasantPositions().get(0).toString()+" estimated cost is: "+(child.getCost()+child.heuristic()));
     			     continue;
     			} else {
     				openset.add(child);
-    				System.out.println("Hash is: " + child.hashCode() + " gold is " + child.getGoldAmount() +" wood is " +child.getWoodAmount() + " Position is: " + child.getPeasantPositions().get(0).toString()+" estimated cost is: "+(child.getCost()+child.heuristic()));
+    				System.out.println(" gold is " + child.getGoldAmount() +" wood is " +child.getWoodAmount() + " Position is: " + child.getPeasantPositions().get(0).toString()+" estimated cost is: "+(child.heuristic()));
     			}
     		}
     		//add the state to the closed list after going through all of it's children

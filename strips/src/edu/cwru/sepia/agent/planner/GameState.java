@@ -157,7 +157,7 @@ public class GameState implements Comparable<GameState> {
 		goalWoodAmount = original.goalWoodAmount;
 		goalGoldAmount = original.goalGoldAmount;
 		playerNum = original.playerNum;
-		cost = original.cost + costOfAction(original.action);
+		
 		buildPeasantsAvailable = original.buildPeasantsAvailable;
 
 		xSize = original.xSize;
@@ -183,7 +183,7 @@ public class GameState implements Comparable<GameState> {
 		peasantIds = new ArrayList<Integer>(original.peasantIds);
 		peasantPositions = new ArrayList<Position>(original.peasantPositions);
 		peasantCargo = new ArrayList<Integer>(original.peasantCargo);
-
+		cost = (int) (original.cost + heuristic());
 		parent = original.parent;
 		action = original.action;
 	}
@@ -266,11 +266,11 @@ public class GameState implements Comparable<GameState> {
 		}
 		//if (action != null && action instanceof MoveWood)
 			//System.out.print("movewood ");
-		System.out.print("Children: ");
-		for (GameState child : children) {
-			 System.out.print(child.getAction()+", ");
-		}
-		 System.out.println();
+		//System.out.print("Children: ");
+		//for (GameState child : children) {
+			// System.out.print(child.getAction()+", ");
+		//}
+		// System.out.println();
 		return children;
 	}
 
@@ -310,10 +310,7 @@ public class GameState implements Comparable<GameState> {
 	 *
 	 * Add a description here in your submission explaining your heuristic.
 	 *
-	 * If is goal, return 0. Otherwise, go through all of the peasants and find
-	 * the distance it would take to go to the closest necessary resource that
-	 * isn't empty, and back, and add that to the current cost. Returns the sum
-	 * total cost of all distances divided by the number of peasants sqaured.
+	 * 
 	 * 
 	 * @return The value estimated remaining cost to reach a goal state from
 	 *         this state.
@@ -329,21 +326,21 @@ public class GameState implements Comparable<GameState> {
 		 * for(int i = 0; i<numPeasants; i++) { heur +=
 		 * getDistanceToClosestNeededResourceAndBack(peasantPositions.get(i)); }
 		 */
-		heur += Math.abs(getGoalGoldAmount() - getGoldAmount() - getCarriedGold()) + Math.abs(getGoalWoodAmount() - getWoodAmount() - getCarriedWood());
-		if(getGoalGoldAmount() - getGoldAmount() - getCarriedGold()>getGoalWoodAmount() - getWoodAmount() - getCarriedWood() && action instanceof MoveWood) {
+		heur += Math.abs(getGoalGoldAmount() - getGoldAmount() - getCarriedGold())*Math.abs(getGoalGoldAmount() - getGoldAmount() - getCarriedGold()) + Math.abs(getGoalWoodAmount() - getWoodAmount() - getCarriedWood());
+		/*if(getGoalGoldAmount() - getGoldAmount() - getCarriedGold()>getGoalWoodAmount() - getWoodAmount() - getCarriedWood() && action instanceof MoveWood) {
 		     heur+=1000;
 		} else if(getGoalGoldAmount() - getGoldAmount() - getCarriedGold()<getGoalWoodAmount() - getWoodAmount() - getCarriedWood() && action instanceof MoveGold) {
 		     heur+=1000;
 		}
 		if(action instanceof MoveGold) {
-		     heur-=1000;
+		   //  heur-=1000;
 		}
 		if(getGoldAmount()+getCarriedGold()>getGoalGoldAmount() || getGoalWoodAmount()<getWoodAmount()+getCarriedWood()) {
 		     heur=heur*10;
 		}
 		if(peasantIds.size()>1) {
-               heur-=(peasantIds.size()*1000);
-          }
+              // heur-=(peasantIds.size()*1000);
+          } */
           
 		
 																				// shouldn't
