@@ -221,8 +221,8 @@ public class GameState implements Comparable<GameState> {
 	public List<GameState> generateChildren() {
 		ArrayList<GameState> children = new ArrayList<GameState>();
 		int i=peasantIds.size()-1;
-		/*for (int i = peasantIds.size()-1; i < peasantIds.size(); i++) {
-			DepositWood depositWood = new DepositWood(i + 1);
+		//for (int i = peasantIds.size()-1; i < peasantIds.size(); i++) {
+			/*DepositWood depositWood = new DepositWood(i + 1);
 			GameState depositWoodState = depositWood.apply(this);
 			if (depositWoodState != null) {
 				children.add(depositWoodState);
@@ -328,10 +328,8 @@ public class GameState implements Comparable<GameState> {
 			return heur;
 		}
 		int numPeasants = peasantPositions.size();
-		heur += (Math.abs(getGoalGoldAmount() - getGoldAmount() - getCarriedGold())/25)+ 
-		        (Math.abs(getGoalWoodAmount() - getWoodAmount() - getCarriedWood())/25);
-		heur/=(numPeasants*numPeasants);
-		return heur;
+		heur += Math.abs(goalGoldAmount - goldAmount - getCarriedGold())*2 + Math.abs(getGoalWoodAmount() - getWoodAmount() - getCarriedWood());
+		return heur/(numPeasants*numPeasants); 
 	}
 
 	/**
