@@ -328,7 +328,7 @@ public class GameState implements Comparable<GameState> {
 																				// go
 																				// negative
 		//System.out.println("heuristic: " + heur);
-		return heur / (numPeasants * numPeasants); // Weighted towards more
+		return heur; // Weighted towards more
 													// peasants... still
 													// necessary?
 	}
