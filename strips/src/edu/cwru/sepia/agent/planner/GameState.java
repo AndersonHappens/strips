@@ -262,12 +262,12 @@ public class GameState implements Comparable<GameState> {
 				children.add(moveTownHallState);
 			}
 		}*/
-		CompoundGatherGold gatherGold=new CompoundGatherGold(i);
+		CompoundGatherGold gatherGold=new CompoundGatherGold(i+1);
 		GameState gatherGoldState=gatherGold.apply(this);
 		if(gatherGoldState!=null) {
 		     children.add(gatherGoldState);
 		}
-		CompoundGatherWood gatherWood=new CompoundGatherWood(i);
+		CompoundGatherWood gatherWood=new CompoundGatherWood(i+1);
           GameState gatherWoodState=gatherWood.apply(this);
           if(gatherWoodState!=null) {
                children.add(gatherWoodState);

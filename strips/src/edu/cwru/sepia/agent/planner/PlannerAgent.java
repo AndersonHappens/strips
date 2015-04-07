@@ -178,7 +178,7 @@ public class PlannerAgent extends Agent {
     		currentNode = currentNode.getParent();
     	}
     	//remove the start node from the stack 
-    	//endList.pop();
+    	endList.pop();
     	return endList;
     }
 
