@@ -117,7 +117,7 @@ public class PEAgent extends Agent {
      	    }
 	    } else {
 	         System.err.println("The plan is is empty.");
-	         System.exit(1);
+	         //System.exit(1);
 	    }
          return map;
     }
