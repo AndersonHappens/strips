@@ -112,15 +112,12 @@ public class PlannerAgent extends Agent {
     	    //if we have found the goal, stop the search
     	    	 if (state.isGoal()) {
                 System.out.println("Goal found");
-                System.out.println(state.getGoldAmount()+"  "+state.getWoodAmount());
                 goal=state;
                 goalFound = true;
                 break;
            } 
     	    //get all valid children
     		for(GameState child: state.generateChildren()) {
-    		 System.out.println(child.getAction()+"  "+child.getCost()+"  "+child.heuristic()+"  "+(child.getCost()+child.heuristic()));
-           
     			if(openset.contains(child)) {
     				//iterate through the openset until we found the child node we are looking for
     			     Iterator<GameState> iterator=openset.iterator();
@@ -167,8 +164,6 @@ public class PlannerAgent extends Agent {
     	GameState currentNode = end;
     	//while the parent exists, add the node to the endList
     	while(currentNode.getParent()!=null && currentNode.getAction() != null) {
-    	 System.out.println(currentNode.getAction()+"  "+currentNode.getCost()+"  "+currentNode.heuristic()+"  "+(currentNode.getCost()+currentNode.heuristic()));
-      
     	     endList.push(currentNode.getAction());
     		currentNode = currentNode.getParent();
     	}

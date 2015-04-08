@@ -110,7 +110,7 @@ public class PEAgent extends Agent {
                if(feedback.getFeedback() == ActionFeedback.INCOMPLETE) {
                     return map;
                } else if(feedback.getFeedback()==ActionFeedback.FAILED) {
-                    System.err.println(feedback.getFeedback());
+                    //reattempt failed action
                     map.put(feedback.getAction().getUnitId(), feedback.getAction());
                     return map;
                }
@@ -118,13 +118,12 @@ public class PEAgent extends Agent {
 	    if(!plan.isEmpty()) {
      	    StripsAction act=plan.pop();
      	    ArrayList<Action> actions=createSepiaAction(act);
-     	    System.out.println(actions);
      	    for(Action action:actions) {
      	         map.put(action.getUnitId(), action);
      	    }
 	    } else {
 	         System.err.println("The plan is is empty.");
-	         //System.exit(1);
+	         System.exit(1);
 	    }
          return map;
     }
