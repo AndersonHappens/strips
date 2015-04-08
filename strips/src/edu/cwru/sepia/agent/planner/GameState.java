@@ -209,7 +209,7 @@ public class GameState implements Comparable<GameState> {
 	 */
 	public List<GameState> generateChildren() {
 		ArrayList<GameState> children = new ArrayList<GameState>();
-		for (int i = peasantIds.size()-1; i < peasantIds.size(); i++) {
+		/*for (int i = peasantIds.size()-1; i < peasantIds.size(); i++) {
 			DepositWood depositWood = new DepositWood(i + 1);
 			GameState depositWoodState = depositWood.apply(this);
 			if (depositWoodState != null) {
@@ -247,7 +247,7 @@ public class GameState implements Comparable<GameState> {
 			if (moveTownHallState != null) {
 				children.add(moveTownHallState);
 			}
-		}
+		}*/
 		
 		BuildPeasant buildPeasant = new BuildPeasant();
           GameState buildPeasantState = buildPeasant.apply(this);
@@ -257,7 +257,7 @@ public class GameState implements Comparable<GameState> {
           // Compound gather moves were implemented because each collection of a resource will always require exactly
           // one move to the resource, one gather, one move to the town hall, and one deposit.
           // Makes the search much faster.
-          /*for(int i=0;i<peasantIds.size();i++) {
+          for(int i=0;i<peasantIds.size();i++) {
                CompoundGatherGold gatherGold=new CompoundGatherGold(i+1);
      		GameState gatherGoldState=gatherGold.apply(this);
      		if(gatherGoldState!=null) {
@@ -268,7 +268,7 @@ public class GameState implements Comparable<GameState> {
                if(gatherWoodState!=null) {
                     children.add(gatherWoodState);
                }
-          }*/
+          }
 		return children;
 	}
 
