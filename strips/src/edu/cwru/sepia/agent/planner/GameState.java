@@ -280,14 +280,17 @@ public class GameState implements Comparable<GameState> {
 	 * computing a consistent heuristic that is even better, but not strictly
 	 * necessary.
 	 *
-	 * Add a description here in your submission explaining your heuristic.
 	 *
+	 * Heuristic is the absolute value of the difference in goal gold amount and 
+	 * gold carried by peasants and in town halls cubed (to wait towards gold for build peasants later)
+	 * plus the difference in goal wood amount minus the wood in the town hall minus carried wood,
+	 * divided by the number of peasants to the fourth power to weight towards more peasants.
+	 * 
 	 * 
 	 * 
 	 * @return The value estimated remaining cost to reach a goal state from
 	 *         this state.
 	 */
-	// FIXME
 	public double heuristic() {
 		double heur = 0;
 		if (isGoal()) {
