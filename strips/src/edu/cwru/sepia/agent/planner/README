@@ -1,0 +1,7 @@
+Jake Anderson, jta40
+Joseph Tate, jgt17
+
+We implemented CompoundGatherGold and CompoundGatherWood in addition to the base moves specified in the assignment.
+Each of these applies a move to the resource, followed by a gather of that resource, a move back to the town hall, and a deposit of that resource.
+This remains optimal because each full collection of a resource will require at least these moves.
+By using these in the A* search we greatly reduce the branching factor and reduce the depth of the search space by 4, greatly improving the speed of the search.
