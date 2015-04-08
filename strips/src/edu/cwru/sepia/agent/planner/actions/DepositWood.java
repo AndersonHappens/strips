@@ -52,7 +52,7 @@ public class DepositWood implements StripsAction {
           ArrayList<Integer> peasantCargo=newState.getPeasantCargo();
           for(int i=0;i<peasantIDs.length;i++) {
                for(int j=0;j<peasantIdsInvolved.length;j++) {
-                    if(peasantIDs[i].equals(peasantIdsInvolved.length)) {
+                    if(peasantIDs[i].equals(peasantIdsInvolved[j])) {
                          peasantCargo.set(i, GameState.NONE);
                     }
                }

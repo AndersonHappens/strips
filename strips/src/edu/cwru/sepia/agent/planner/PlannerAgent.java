@@ -110,8 +110,7 @@ public class PlannerAgent extends Agent {
     	while(!openset.isEmpty()) {
     	    state = openset.remove();
     	    //if we have found the goal, stop the search
-    	    //System.out.println(state.getAction()+"  "+state.getCost()+"  "+state.heuristic()+"  "+(state.getCost()+state.heuristic()));
-         	 if (state.isGoal()) {
+    	    	 if (state.isGoal()) {
                 System.out.println("Goal found");
                 goal=state;
                 goalFound = true;
@@ -119,6 +118,8 @@ public class PlannerAgent extends Agent {
            } 
     	    //get all valid children
     		for(GameState child: state.generateChildren()) {
+    		 System.out.println(child.getAction()+"  "+child.getCost()+"  "+child.heuristic()+"  "+(child.getCost()+child.heuristic()));
+           
     			if(openset.contains(child)) {
     				//iterate through the openset until we found the child node we are looking for
     			     Iterator<GameState> iterator=openset.iterator();
@@ -130,7 +131,7 @@ public class PlannerAgent extends Agent {
     			          }
     			     }
     			     //if the cost of the node already in the openset is more expensive than the child, remove it and add the child
-         			if(temp.getCost() >= child.getCost()) {
+         			if(temp.getCost()+temp.heuristic() >= child.getCost()+child.heuristic()) {
                          iterator.remove();
                          openset.offer(child);
                     }

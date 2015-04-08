@@ -294,10 +294,7 @@ public class GameState implements Comparable<GameState> {
 			return heur;
 		}
 		int numPeasants = peasantPositions.size();
-		heur += Math.abs(goalGoldAmount - goldAmount - getCarriedGold())*2 + Math.abs(getGoalWoodAmount() - getWoodAmount() - getCarriedWood());
-		if(numPeasants>1) {
-		     return 0;
-		}
+		heur += Math.pow(Math.abs((getGoalGoldAmount() - getGoldAmount() - getCarriedGold())/25),3) + Math.pow(Math.abs((getGoalWoodAmount() - getWoodAmount() - getCarriedWood())/25),1);
 		return heur/(numPeasants*numPeasants*numPeasants*numPeasants); 
 	}
 
