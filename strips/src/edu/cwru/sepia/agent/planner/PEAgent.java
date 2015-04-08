@@ -13,7 +13,9 @@ import edu.cwru.sepia.environment.model.state.Unit;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
@@ -103,15 +105,20 @@ public class PEAgent extends Agent {
          }
          Map<Integer, Action> map = new HashMap<Integer, Action>();
          int currentTurn = stateView.getTurnNumber();
-         for(ActionResult feedback : historyView.getCommandFeedback(playernum, currentTurn-1).values())
+         for(ActionResult feedback:historyView.getCommandFeedback(playernum, currentTurn-1).values())
          {
                if(feedback.getFeedback() == ActionFeedback.INCOMPLETE) {
+                    return map;
+               } else if(feedback.getFeedback()==ActionFeedback.FAILED) {
+                    System.err.println(feedback.getFeedback());
+                    map.put(feedback.getAction().getUnitId(), feedback.getAction());
                     return map;
                }
          }
 	    if(!plan.isEmpty()) {
      	    StripsAction act=plan.pop();
      	    ArrayList<Action> actions=createSepiaAction(act);
+     	    System.out.println(actions);
      	    for(Action action:actions) {
      	         map.put(action.getUnitId(), action);
      	    }
