@@ -6,12 +6,9 @@ import edu.cwru.sepia.environment.model.state.ResourceNode.ResourceView;
 import edu.cwru.sepia.environment.model.state.ResourceType;
 import edu.cwru.sepia.environment.model.state.State;
 import edu.cwru.sepia.environment.model.state.Unit;
-import edu.cwru.sepia.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -187,14 +184,6 @@ public class GameState implements Comparable<GameState> {
 		parent = original.parent;
 		action = original.action;
 	}
-	
-	private int costOfAction(StripsAction act) {
-		int cost = 1; // default cost of 1 for all 
-		if (act instanceof Move) {
-			cost = ((Move) act).getDistanceMoved();
-		}
-		return cost;
-	}
 
 	/**
 	 * Unlike in the first A* assignment there are many possible goal states. As
@@ -221,8 +210,8 @@ public class GameState implements Comparable<GameState> {
 	public List<GameState> generateChildren() {
 		ArrayList<GameState> children = new ArrayList<GameState>();
 		//int i=peasantIds.size()-1;
-		//for (int i = peasantIds.size()-1; i < peasantIds.size(); i++) {
-			/*DepositWood depositWood = new DepositWood(i + 1);
+		for (int i = peasantIds.size()-1; i < peasantIds.size(); i++) {
+			DepositWood depositWood = new DepositWood(i + 1);
 			GameState depositWoodState = depositWood.apply(this);
 			if (depositWoodState != null) {
 				children.add(depositWoodState);
@@ -250,26 +239,28 @@ public class GameState implements Comparable<GameState> {
 			
 			MoveGold moveGold = new MoveGold(i + 1);
 			GameState moveGoldState = moveGold.apply(this);
-			// System.out.println(moveGold.apply(this));
 			if (moveGoldState != null) {
 				children.add(moveGoldState);
 			}
-			System.out.println("move gold alone "+moveGoldState.getPeasantPositions());
-               
+			
 			MoveTownHall moveTownHall = new MoveTownHall(i + 1);
 			GameState moveTownHallState = moveTownHall.apply(this);
 			if (moveTownHallState != null) {
 				children.add(moveTownHallState);
 			}
-		}*/
+		}
+		
 		BuildPeasant buildPeasant = new BuildPeasant();
           GameState buildPeasantState = buildPeasant.apply(this);
           if (buildPeasantState != null) {
                children.add(buildPeasantState);
           }
-          int i=peasantIds.size()-1;
+          // Compound gather moves were implemented because each collection of a resource will always require exactly
+          // one move to the resource, one gather, one move to the town hall, and one deposit.
+          // Commented out because not according to assignment specifications, but makes the search much faster.
+          //int i=peasantIds.size()-1;
           //for(int i=0;i<peasantIds.size();i++) {
-               CompoundGatherGold gatherGold=new CompoundGatherGold(i+1);
+               /*CompoundGatherGold gatherGold=new CompoundGatherGold(i+1);
      		GameState gatherGoldState=gatherGold.apply(this);
      		if(gatherGoldState!=null) {
      		     children.add(gatherGoldState);
@@ -278,37 +269,9 @@ public class GameState implements Comparable<GameState> {
                GameState gatherWoodState=gatherWood.apply(this);
                if(gatherWoodState!=null) {
                     children.add(gatherWoodState);
-               }
+               }*/
           //}
 		return children;
-	}
-
-	/**
-	 * Returns whether or not the gamestate is valid.
-	 * 
-	 * @return
-	 */
-	private boolean isValid(GameState currentState) {
-		// create a new temporary GameState to check against the enemy and
-		// resourcelocations
-		// GameState temp = (new GameState(x, y, null, 0));
-		for (Position position : currentState.peasantPositions) {
-			if (!(position.inBounds(currentState.xSize, currentState.ySize))) {
-				return false;
-			}
-			for (Position wood : currentState.woodPositions) {
-				if (wood != null && wood.equals(position)) {
-					return false;
-				}
-			}
-			for (Position gold : currentState.goldPositions) {
-				if (gold != null && gold.equals(position)) {
-					return false;
-				}
-			}
-
-		}
-		return true;
 	}
 
 	/**
@@ -336,89 +299,6 @@ public class GameState implements Comparable<GameState> {
 		     return 0;
 		}
 		return heur/(numPeasants*numPeasants*numPeasants*numPeasants); 
-	}
-
-	/**
-	 * 
-	 * @param pos
-	 * @return the distance to the closest resource that is not empty and is
-	 *         still needed, and back from the current peasant.
-	 */
-	private double getDistanceToClosestNeededResourceAndBack(Position pos) {
-		double distance = Double.MAX_VALUE;
-		double dist;
-		Position post;
-		for (int i = 0; i < goldPositions.length; i++) {
-			post = goldPositions[i];
-			if (goalGoldAmount <= goldAmount + getCarriedGold()) {
-				break;
-			}
-			if (goldAmounts[i] < 100) {
-				continue;
-			}
-			dist = pos.chebyshevDistance(post);
-			if (dist < distance) {
-				distance = dist - 1; // -1 because don't include mine space...
-			}
-		}
-		for (int i = 0; i < woodPositions.length; i++) {
-			post = woodPositions[i];
-			if (goalWoodAmount <= woodAmount + getCarriedWood()) {
-				break;
-			}
-			if (woodAmounts[i] < 100) {
-				continue;
-			}
-			dist = pos.chebyshevDistance(post);
-			if (dist < distance) {
-				distance = dist - 1;// -1 because don't include forest space...
-			}
-		}
-		// all wood and gold that is needed is gathered...
-		if (distance == Double.MAX_VALUE) {
-			distance = 0;
-		}
-		distance *= 2; // distance to forest or mine and back
-		distance += pos.chebyshevDistance(townHallPosition); // and back to the
-																// town hall...
-
-		return distance;
-	}
-
-	// ignore for now?
-	private Pair<Position, Integer> getClosestGold(final Position pos, int index) {
-		ArrayList<Pair<Position, Integer>> post = new ArrayList<Pair<Position, Integer>>();
-		for (int i = 0; i < goldPositions.length; i++) {
-			post.add(new Pair<Position, Integer>(goldPositions[i],
-					goldAmounts[i]));
-		}
-		Collections.sort(post, new Comparator<Pair<Position, Integer>>() {
-			@Override
-			public int compare(Pair<Position, Integer> o1,
-					Pair<Position, Integer> o2) {
-				return o1.a.chebyshevDistance(pos)
-						- o2.a.chebyshevDistance(pos);
-			}
-		});
-		return post.get(index);
-	}
-
-	// ignore for now?
-	private Pair<Position, Integer> getClosestWood(final Position pos, int index) {
-		ArrayList<Pair<Position, Integer>> post = new ArrayList<Pair<Position, Integer>>();
-		for (int i = 0; i < woodPositions.length; i++) {
-			post.add(new Pair<Position, Integer>(woodPositions[i],
-					woodAmounts[i]));
-		}
-		Collections.sort(post, new Comparator<Pair<Position, Integer>>() {
-			@Override
-			public int compare(Pair<Position, Integer> o1,
-					Pair<Position, Integer> o2) {
-				return o1.a.chebyshevDistance(pos)
-						- o2.a.chebyshevDistance(pos);
-			}
-		});
-		return post.get(index);
 	}
 
 	/**
