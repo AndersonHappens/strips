@@ -1,16 +1,11 @@
 package edu.cwru.sepia.agent.planner.actions;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import edu.cwru.sepia.action.Action;
 import edu.cwru.sepia.agent.planner.GameState;
 
 public class CompoundGatherGold implements StripsAction {
 
      int peasantsInvolved;
      private Integer[] peasantIdsInvolved;
-     private ArrayList<Action> actions = new ArrayList<Action>();
      
      public CompoundGatherGold(int k){
           peasantsInvolved=k;
@@ -47,11 +42,6 @@ public class CompoundGatherGold implements StripsAction {
                return null;
           }
           return depositGoldState;
-     }
-
-     @Override
-     public ArrayList<Action> toSepiaAction() {
-          return actions;
      }
 
      @Override

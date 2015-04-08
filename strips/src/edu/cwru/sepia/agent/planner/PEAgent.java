@@ -6,11 +6,9 @@ import edu.cwru.sepia.action.ActionResult;
 import edu.cwru.sepia.agent.Agent;
 import edu.cwru.sepia.agent.planner.actions.*;
 import edu.cwru.sepia.environment.model.history.History;
-import edu.cwru.sepia.environment.model.state.ResourceType;
 import edu.cwru.sepia.environment.model.state.State;
 import edu.cwru.sepia.environment.model.state.Template;
 import edu.cwru.sepia.environment.model.state.Unit;
-import edu.cwru.sepia.environment.model.state.Unit.UnitView;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -99,7 +97,6 @@ public class PEAgent extends Agent {
      */
     @Override
     public Map<Integer, Action> middleStep(State.StateView stateView, History.HistoryView historyView) {
-        // System.out.println("in the middle step");
          if(newPeasantCreated) {
               peasantIdMap.put(newPeasantId, stateView.getAllUnitIds().get(stateView.getAllUnitIds().size()-1));
               newPeasantCreated=false;
@@ -119,7 +116,8 @@ public class PEAgent extends Agent {
      	         map.put(action.getUnitId(), action);
      	    }
 	    } else {
-	         System.err.println("the plan is empty!!!");
+	         System.err.println("The plan is is empty.");
+	         System.exit(1);
 	    }
          return map;
     }
@@ -131,24 +129,6 @@ public class PEAgent extends Agent {
      */
     private ArrayList<Action> createSepiaAction(StripsAction action) {
         ArrayList<Action> actions=new ArrayList<Action>();
-       /* if(action instanceof CompoundGatherGold) {
-        	CompoundGatherGold act=(CompoundGatherGold) action;
-            Integer[] peasantIdsInvolved = act.getPeasantIdsInvolved();
-            Position[] peasantPositionsInvolved=act.getPeasantPositionsInvolved();
-            Position[] treePositionsInvolved=act.getTreePositionsInvolved();
-            for(int i=0;i<peasantIdsInvolved.length;i++) {
-                actions.add(Action.createCompoundMove(peasantIdMap.get(peasantIdsInvolved[i]),targetPositions.get(i).x,targetPositions.get(i).y));
-           }
-            for(int i=0;i<peasantIdsInvolved.length;i++) {
-                actions.add(Action.createPrimitiveGather(peasantIdMap.get(peasantIdsInvolved[i]), peasantPositionsInvolved[i].getDirection(treePositionsInvolved[i])));   
-           }            
-            for(int i=0;i<peasantIdsInvolved.length;i++) {
-                actions.add(Action.createCompoundMove(peasantIdMap.get(peasantIdsInvolved[i]),targetPositions.get(i).x,targetPositions.get(i).y));
-           }
-            for(int i=0;i<peasantIdsInvolved.length;i++) {
-                actions.add(Action.createPrimitiveDeposit(peasantIdMap.get(peasantIdsInvolved[i]), peasantPositionsInvolved[i].getDirection(townHallPosition)));   
-           }
-        }*/
         if(action instanceof GatherWood) {
              GatherWood act=(GatherWood) action;
              Integer[] peasantIdsInvolved = act.getPeasantIdsInvolved();

@@ -1,13 +1,10 @@
 package edu.cwru.sepia.agent.planner.actions;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.PriorityQueue;
 
-import edu.cwru.sepia.action.Action;
 import edu.cwru.sepia.agent.planner.GameState;
 import edu.cwru.sepia.agent.planner.Position;
-import edu.cwru.sepia.agent.planner.actions.Move.CandidateMove;
 
 public class MoveTownHall extends Move implements StripsAction{
 
@@ -70,15 +67,6 @@ public class MoveTownHall extends Move implements StripsAction{
           return newState;
      }
 
-     @Override
-     public ArrayList<Action> toSepiaAction() {
-          ArrayList<Action> moves=new ArrayList<Action>();
-          for(int i=0;i<peasantIdsInvolved.size();i++) {
-               moves.add(Action.createCompoundMove(peasantIdsInvolved.get(i),targetPositions.get(i).x,targetPositions.get(i).y));
-          }
-          return moves;
-     }
-
      public Integer[] getPeasantIdsInvolved() {
           return peasantIdsInvolved.toArray(new Integer[0]);
      }
@@ -88,5 +76,9 @@ public class MoveTownHall extends Move implements StripsAction{
      }
      public int getDistanceMoved() {
     	 return distanceMoved;
+     }
+     
+     public String toString() {
+          return "MoveTownHall("+peasantIdsInvolved+", "+targetPositions+")";
      }
 }

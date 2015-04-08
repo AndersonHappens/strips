@@ -3,7 +3,6 @@ package edu.cwru.sepia.agent.planner.actions;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import edu.cwru.sepia.action.Action;
 import edu.cwru.sepia.agent.planner.GameState;
 import edu.cwru.sepia.agent.planner.Position;
 
@@ -83,13 +82,8 @@ public class GatherGold implements StripsAction {
      public Position[] getMinePositionsInvolved() {
           return minePositionsInvolved;
      }
-
-     @Override
-     public ArrayList<Action> toSepiaAction() {
-          ArrayList<Action> actions=new ArrayList<Action>();
-          for(int i=0;i<peasantIdsInvolved.length;i++) {
-               actions.add(Action.createPrimitiveGather(peasantIdsInvolved[i], peasantPositionsInvolved[i].getDirection(minePositionsInvolved[i])));   
-          }
-          return actions;
+     
+     public String toString() {
+          return "GatherGold("+Arrays.toString(peasantIdsInvolved)+", "+Arrays.toString(minePositionsInvolved)+")";
      }
 }

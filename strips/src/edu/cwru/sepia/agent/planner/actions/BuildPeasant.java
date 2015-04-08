@@ -1,8 +1,5 @@
 package edu.cwru.sepia.agent.planner.actions;
 
-import java.util.ArrayList;
-
-import edu.cwru.sepia.action.Action;
 import edu.cwru.sepia.agent.planner.GameState;
 
 public class BuildPeasant implements StripsAction {
@@ -31,12 +28,6 @@ public class BuildPeasant implements StripsAction {
           return newState;
      }
 
-     @Override
-     public ArrayList<Action> toSepiaAction() {
-          // TODO Auto-generated method stub
-          return null;
-     }
-     
      public int getNewPeasantId() {
           return newPeasantId;
      }
@@ -44,5 +35,9 @@ public class BuildPeasant implements StripsAction {
      @Override
      public Integer[] getPeasantIdsInvolved() {
           return new Integer[0];
+     }
+     
+     public String toString() {
+          return "BuildPeasant()";
      }
 }

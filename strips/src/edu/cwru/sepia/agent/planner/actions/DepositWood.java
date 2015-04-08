@@ -1,8 +1,8 @@
 package edu.cwru.sepia.agent.planner.actions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-import edu.cwru.sepia.action.Action;
 import edu.cwru.sepia.agent.planner.GameState;
 import edu.cwru.sepia.agent.planner.Position;
 
@@ -64,15 +64,6 @@ public class DepositWood implements StripsAction {
           return newState;
      }
 
-     @Override
-     public ArrayList<Action> toSepiaAction() {
-          ArrayList<Action> actions=new ArrayList<Action>();
-          for(int i=0;i<peasantIdsInvolved.length;i++) {
-               actions.add(Action.createPrimitiveDeposit(peasantIdsInvolved[i], peasantPositionsInvolved[i].getDirection(townHallPosition)));   
-          }
-          return actions;
-     }
-     
      public Integer[] getPeasantIdsInvolved() {
           return peasantIdsInvolved;
      }
@@ -83,5 +74,9 @@ public class DepositWood implements StripsAction {
 
      public Position getTownHallPosition() {
           return townHallPosition;
+     }
+     
+     public String toString() {
+          return "DepositWood("+Arrays.toString(peasantIdsInvolved)+")";
      }
 }

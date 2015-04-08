@@ -2,7 +2,6 @@ package edu.cwru.sepia.agent.planner.actions;
 
 import java.util.ArrayList;
 
-import edu.cwru.sepia.action.Action;
 import edu.cwru.sepia.agent.planner.GameState;
 
 /**
@@ -40,13 +39,6 @@ public interface StripsAction {
      * @return State resulting from successful action appliction.
      */
     public GameState apply(GameState state);
-    
-    /**
-     * Translates the STRIPS action into an ArrayList of SEPIA actions.
-     * 
-     * @return an ArrayList of SEPIA actions corresponding to this STRIPS action
-     */
-    public ArrayList<Action> toSepiaAction();
     
     public Integer[] getPeasantIdsInvolved();
 }

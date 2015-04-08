@@ -3,7 +3,6 @@ package edu.cwru.sepia.agent.planner.actions;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import edu.cwru.sepia.action.Action;
 import edu.cwru.sepia.agent.planner.GameState;
 import edu.cwru.sepia.agent.planner.Position;
 
@@ -72,15 +71,6 @@ public class GatherWood implements StripsAction {
           return newState;
      }
 
-     @Override
-     public ArrayList<Action> toSepiaAction() {
-          ArrayList<Action> actions=new ArrayList<Action>();
-          for(int i=0;i<peasantIdsInvolved.length;i++) {
-               actions.add(Action.createPrimitiveGather(peasantIdsInvolved[i], peasantPositionsInvolved[i].getDirection(treePositionsInvolved[i])));   
-          }
-          return actions;
-     }
-
      public Integer[] getPeasantIdsInvolved() {
           return peasantIdsInvolved;
      }
@@ -91,5 +81,9 @@ public class GatherWood implements StripsAction {
 
      public Position[] getTreePositionsInvolved() {
           return treePositionsInvolved;
+     }
+     
+     public String toString() {
+          return "GatherWood("+Arrays.toString(peasantIdsInvolved)+", "+Arrays.toString(treePositionsInvolved)+")";
      }
 }
